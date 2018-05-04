@@ -6,6 +6,20 @@ intl-ts est une bibliothèque d'internationalisation (i18n) pour TypeScript. Le 
 * Immuable : excepté pour la représentation d'une `LanguageMap` en JavaScript (à cause d'une initialisation paresseuse), l'état des objets ne changera jamais. Un nouvel objet est créé lors de l'appel à `LanguageMap.merge` ou `Intl.changePreferences`. Idéal pour la plupart des cadres basés sur les états, tel que React.
 * Agnostique : peut être utilisé à la fois côté serveur et côté navigateur.
 
+# Installation
+
+L'installation se fait avec la commande `npm install` :
+
+```bash
+$ npm install --save intl-ts
+```
+
+Si vous préférez utiliser `yarn` :
+
+```bash
+$ yarn add intl-ts
+```
+
 # Langue
 
 Le français étant ma langue maternelle, fournir les documents et messages en français n'est pas une option. Les autres traductions sont bienvenues.
