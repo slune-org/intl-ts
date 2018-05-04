@@ -1,3 +1,7 @@
+[![NPM Version][npm-image]][npm-url]
+[![Build][travis-image]][travis-url]
+[![Test Coverage][coveralls-image]][coveralls-url]
+
 # intl-ts - Yet another typesafe internationalization library
 
 intl-ts is an i18n (internationlization) library for TypeScript. The package is compiled in ES5 and so can also be used by JavaScript applications. Its main features are:
@@ -5,6 +9,20 @@ intl-ts is an i18n (internationlization) library for TypeScript. The package is 
 * Type safe: using a wrong message name or the wrong type for the parameters will be checked at compile time.
 * Immutable: except for JavaScript representation of the `LanguageMap` (because of lazy initialization) object states will never change. New object is created when calling `LanguageMap.merge` or `Intl.changePreferences`. Good for most state-aware framework, like React.
 * Agnostic: can be used both at server or browser side.
+
+# Installation
+
+Installation is done using `npm install` command:
+
+```bash
+$ npm install --save intl-ts
+```
+
+If you prefer using `yarn`:
+
+```bash
+$ yarn add intl-ts
+```
 
 # Language/langue
 

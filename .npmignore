@@ -5,6 +5,9 @@ tsconfig.json
 # Tests
 dist/**/*.spec.*
 
+# CI
+.travis.yaml
+
 # Coverage
 .nyc_output/
 coverage/
