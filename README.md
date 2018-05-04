@@ -1,6 +1,8 @@
-[![NPM Version][npm-image]][npm-url]
-[![Build][travis-image]][travis-url]
-[![Test Coverage][coveralls-image]][coveralls-url]
+[![npm package](https://badge.fury.io/js/intl-ts.svg)](https://www.npmjs.com/package/intl-ts)
+[![license](https://img.shields.io/github/license/sveyret/intl-ts.svg)](https://github.com/sveyret/intl-ts/blob/master/LICENSE)
+[![build](https://api.travis-ci.org/sveyret/intl-ts.svg?branch=master)](https://travis-ci.org/sveyret/intl-ts)
+[![coverage](https://coveralls.io/repos/github/sveyret/intl-ts/badge.svg?branch=master)](https://coveralls.io/github/sveyret/intl-ts)
+[![issues](https://img.shields.io/github/issues/sveyret/intl-ts.svg)](https://github.com/sveyret/intl-ts/issues)
 
 # intl-ts - Yet another typesafe internationalization library
 
