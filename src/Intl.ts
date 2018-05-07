@@ -14,7 +14,7 @@ import { LanguageMap } from './LanguageMap'
  * Main class managing internationalization. Intl objects are immutable.
  */
 export class Intl<T extends Messages> {
-  private readonly preferences: string[]
+  readonly preferences: ReadonlyArray<string>
 
   /**
    * Create a new Intl.
@@ -27,20 +27,21 @@ export class Intl<T extends Messages> {
     preferences?: ReadonlyArray<string>,
     createGeneric: boolean = true
   ) {
-    this.preferences = []
+    const _preferences: string[] = []
     if (preferences) {
       for (let preference of Intl.formatPreferences(
         preferences,
         createGeneric
       )) {
         if (
-          this.preferences.indexOf(preference) < 0 &&
+          _preferences.indexOf(preference) < 0 &&
           this.languages.contains(preference)
         ) {
-          this.preferences.push(preference)
+          _preferences.push(preference)
         }
       }
     }
+    this.preferences = _preferences
   }
 
   private static formatPreferences(

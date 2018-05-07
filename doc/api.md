@@ -66,6 +66,10 @@ Note that language code are formatted to lowercase and digit separated with unde
 
 Create a new internationalization object with the same language map as this one but new preferences.
 
+## preferences: ReadonlyArray\<string>
+
+The preferences really used by the object. Only languages which are found in the language map are retained.
+
 ## t\<K extends keyof T>(name: K, ...args: any[]): string
 
 Build the message for the given name with given parameters in the most appropriate language. This method is actually overridden so that parameter types are checked at compile time against message expected parameter types.

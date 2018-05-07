@@ -59,6 +59,11 @@ describe('Intl', () => {
     )
   })
 
+  it('must forget non existing language in preferences', () => {
+    const newLang = lang.changePreferences(['eo', 'dummy', 'fr'])
+    expect(newLang.preferences).to.have.ordered.members(['eo', 'fr'])
+  })
+
   it('must be immutable', () => {
     expect(lang.changePreferences(['anything'])).to.be.not.equal(lang)
   })

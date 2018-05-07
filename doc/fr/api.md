@@ -66,6 +66,10 @@ Notez que les codes de langue sont formatés en minuscules et chiffres séparés
 
 Créer un nouvel objet d'internationalisation avec la même table de langues que celui-ci, mais de nouvelles préférences.
 
+## preferences: ReadonlyArray\<string>
+
+Les préférences réellement utilisées par l'objet. Seules les langues trouvées dans la table de langue sont conservées.
+
 ## t\<K extends keyof T>(name: K, ...args: any[]): string
 
 Construire le message correspondant au nom donné avec les paramètres donnés dans la langue la plus appropriée. Cette méthode est en réalité surchargée afin que le type des paramètres soit controllé lors de la compilation par rapport aux paramètres attendus par le message.
