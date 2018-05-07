@@ -1,6 +1,6 @@
 {
   "name": "intl-ts",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Internationalization library for TypeScript",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -11,17 +11,25 @@
   "scripts": {
     "prepublishOnly": "npm run build && npm run test",
     "build": "npm run clean && npm run tsc",
-    "test":
-      "nyc mocha --require ts-node/register --require source-map-support/register 'src/**/*.spec.ts'",
+    "test": "nyc mocha --require ts-node/register --require source-map-support/register 'src/**/*.spec.ts'",
     "tsc": "tsc",
     "lint": "tslint src/**/*.ts",
     "clean": "rimraf dist"
   },
   "nyc": {
-    "extension": [".ts"],
-    "include": ["src/**"],
-    "exclude": ["**/*.spec.ts"],
-    "reporter": ["lcov", "text"],
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**"
+    ],
+    "exclude": [
+      "**/*.spec.ts"
+    ],
+    "reporter": [
+      "lcov",
+      "text"
+    ],
     "all": true
   },
   "keywords": [
