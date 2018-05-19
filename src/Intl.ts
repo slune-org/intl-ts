@@ -1,5 +1,5 @@
+import { LanguageMap } from './LanguageMap'
 import {
-  Messages,
   Message0,
   Message1,
   Message2,
@@ -7,14 +7,14 @@ import {
   Message4,
   Message5,
   Message6,
+  Messages,
 } from './Messages'
-import { LanguageMap } from './LanguageMap'
 
 /**
  * Main class managing internationalization. Intl objects are immutable.
  */
 export class Intl<T extends Messages> {
-  readonly preferences: ReadonlyArray<string>
+  public readonly preferences: ReadonlyArray<string>
 
   /**
    * Create a new Intl.
@@ -22,14 +22,14 @@ export class Intl<T extends Messages> {
    * @param preferences The preferred languages, ordered.
    * @param createGeneric True to create generic languages in preferences (e.g. will add 'en' for 'en-US').
    */
-  constructor(
+  public constructor(
     private readonly languages: LanguageMap<T>,
     preferences?: ReadonlyArray<string>,
     createGeneric: boolean = true
   ) {
     const _preferences: string[] = []
     if (preferences) {
-      for (let preference of Intl.formatPreferences(
+      for (const preference of Intl.formatPreferences(
         preferences,
         createGeneric
       )) {
@@ -48,9 +48,9 @@ export class Intl<T extends Messages> {
     preferences: ReadonlyArray<string>,
     createGeneric: boolean
   ): string[] {
-    let formattedPreferences: string[] = []
-    for (let preference of preferences) {
-      let portions: string[] = preference.split(/(?:[^A-Za-z0-9])/)
+    const formattedPreferences: string[] = []
+    for (const preference of preferences) {
+      const portions: string[] = preference.split(/(?:[^A-Za-z0-9])/)
       while (portions.length > 0) {
         formattedPreferences.push(portions.join('_').toLowerCase())
         portions.pop()
@@ -67,7 +67,7 @@ export class Intl<T extends Messages> {
    * @param preferences The preferred languages, ordered.
    * @param createGeneric True to create generic languages in preferences (e.g. will add 'en' for 'en-US').
    */
-  changePreferences(
+  public changePreferences(
     preferences: ReadonlyArray<string>,
     createGeneric: boolean = true
   ): Intl<T> {
@@ -78,7 +78,7 @@ export class Intl<T extends Messages> {
    * Get the translated message.
    * @param name The name of the message to get.
    */
-  t<O extends Messages & { [P in K]: Message0 }, K extends keyof O>(
+  public t<O extends Messages & { [P in K]: Message0 }, K extends keyof O>(
     this: Intl<O>,
     name: K
   ): string
@@ -87,17 +87,17 @@ export class Intl<T extends Messages> {
    * Get the translated message.
    * @param name The name of the message to get.
    */
-  t<O extends Messages & { [P in K]: Message1<P1> }, K extends keyof O, P1>(
-    this: Intl<O>,
-    name: K,
-    p1: P1
-  ): string
+  public t<
+    O extends Messages & { [P in K]: Message1<P1> },
+    K extends keyof O,
+    P1
+  >(this: Intl<O>, name: K, p1: P1): string
 
   /**
    * Get the translated message.
    * @param name The name of the message to get.
    */
-  t<
+  public t<
     O extends Messages & { [P in K]: Message2<P1, P2> },
     K extends keyof O,
     P1,
@@ -108,7 +108,7 @@ export class Intl<T extends Messages> {
    * Get the translated message.
    * @param name The name of the message to get.
    */
-  t<
+  public t<
     O extends Messages & { [P in K]: Message3<P1, P2, P3> },
     K extends keyof O,
     P1,
@@ -120,7 +120,7 @@ export class Intl<T extends Messages> {
    * Get the translated message.
    * @param name The name of the message to get.
    */
-  t<
+  public t<
     O extends Messages & { [P in K]: Message4<P1, P2, P3, P4> },
     K extends keyof O,
     P1,
@@ -133,7 +133,7 @@ export class Intl<T extends Messages> {
    * Get the translated message.
    * @param name The name of the message to get.
    */
-  t<
+  public t<
     O extends Messages & { [P in K]: Message5<P1, P2, P3, P4, P5> },
     K extends keyof O,
     P1,
@@ -147,7 +147,7 @@ export class Intl<T extends Messages> {
    * Get the translated message.
    * @param name The name of the message to get.
    */
-  t<
+  public t<
     O extends Messages & { [P in K]: Message6<P1, P2, P3, P4, P5, P6> },
     K extends keyof O,
     P1,
@@ -167,7 +167,7 @@ export class Intl<T extends Messages> {
     p6: P6
   ): string
 
-  t<
+  public t<
     O extends Messages & { [P in K]: (...args: any[]) => string },
     K extends keyof O
   >(this: Intl<O>, name: K, ...args: any[]): string {
@@ -183,9 +183,9 @@ export class Intl<T extends Messages> {
    * Get the message (string or function) with the given name, in the most accurate language.
    * @param name The name of the message.
    */
-  getMessage<K extends keyof T>(name: K): T[K] {
-    for (let preference of this.preferences) {
-      let language: Partial<T> = this.languages.messages(preference)
+  public getMessage<K extends keyof T>(name: K): T[K] {
+    for (const preference of this.preferences) {
+      const language: Partial<T> = this.languages.messages(preference)
       if (name in language) {
         return language[name] as T[K]
       }
@@ -196,7 +196,7 @@ export class Intl<T extends Messages> {
   /**
    * The underlying language map.
    */
-  get languageMap(): LanguageMap<T> {
+  public get languageMap(): LanguageMap<T> {
     return this.languages
   }
 }

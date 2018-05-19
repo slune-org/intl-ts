@@ -1,12 +1,15 @@
+// tslint:disable:no-implicit-dependencies (dev dependencies are enough for tests)
+// tslint:disable:only-arrow-functions (mocha discourage to use arrow function)
 import { expect } from 'chai'
+
 import Intl from '.'
 import {
-  langType,
-  languageMap,
   allAvailables,
+  eo,
   fr,
   fr_ca,
-  eo,
+  langType,
+  languageMap,
 } from './data.spec'
 
 describe('Intl', function() {
@@ -17,46 +20,42 @@ describe('Intl', function() {
   })
 
   it('must give default string', function() {
-    expect(lang.t('hello', 'me')).to.be.equal('Hello me')
+    expect(lang.t('hello', 'me')).to.equal('Hello me')
   })
 
   it('must format language string', function() {
     const newLang = lang.changePreferences(['fr-CA'])
-    expect(newLang.t('hello', 'me')).to.be.equal('Allo me')
+    expect(newLang.t('hello', 'me')).to.equal('Allo me')
   })
 
   it('must fallback to generic types', function() {
     const newLang = lang.changePreferences(['fr-CA'])
-    expect(newLang.t('welcome')).to.be.equal('Bienvenue !')
+    expect(newLang.t('welcome')).to.equal('Bienvenue !')
   })
 
   it('must not fallback to generic type', function() {
     const newLang = lang.changePreferences(['fr-CA'], false)
-    expect(newLang.t('welcome')).to.be.equal('Welcome!')
+    expect(newLang.t('welcome')).to.equal('Welcome!')
   })
 
   it('must use preferred available message if one preference is given', function() {
     const newLang = lang.changePreferences(['eo'])
-    expect(newLang.t('hello', 'me')).to.be.equal('Saluton me')
-    expect(newLang.t('showElementCount', 1)).to.be.equal('There is one element')
+    expect(newLang.t('hello', 'me')).to.equal('Saluton me')
+    expect(newLang.t('showElementCount', 1)).to.equal('There is one element')
   })
 
   it('must use preferred available message if multiple preferences are given', function() {
     const newLang = lang.changePreferences(['fr_CA', 'eo', 'fr'], false)
-    expect(newLang.getMessage('welcome')).to.be.equal(eo.welcome)
-    expect(newLang.getMessage('hello')).to.be.equal(fr_ca.hello)
-    expect(newLang.getMessage('showElementCount')).to.be.equal(
-      fr.showElementCount
-    )
+    expect(newLang.getMessage('welcome')).to.equal(eo.welcome)
+    expect(newLang.getMessage('hello')).to.equal(fr_ca.hello)
+    expect(newLang.getMessage('showElementCount')).to.equal(fr.showElementCount)
   })
 
   it('must use preferred available message or fallback to more generic type', function() {
     const newLang = lang.changePreferences(['eo', 'fr_CA'])
-    expect(newLang.getMessage('welcome')).to.be.equal(eo.welcome)
-    expect(newLang.getMessage('hello')).to.be.equal(eo.hello)
-    expect(newLang.getMessage('showElementCount')).to.be.equal(
-      fr.showElementCount
-    )
+    expect(newLang.getMessage('welcome')).to.equal(eo.welcome)
+    expect(newLang.getMessage('hello')).to.equal(eo.hello)
+    expect(newLang.getMessage('showElementCount')).to.equal(fr.showElementCount)
   })
 
   it('must forget non existing language in preferences', function() {

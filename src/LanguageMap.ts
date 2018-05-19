@@ -19,16 +19,19 @@ export class LanguageMap<T extends Messages> {
    * Create a new LanguageMap with the given list of messages for all supported languages.
    * @param messages The language map definition.
    */
-  constructor(messages: LanguageMapDefinition<T>)
+  public constructor(messages: LanguageMapDefinition<T>)
 
   /**
    * Create a new LanguageMap with the default language messages.
    * @param messages The messages for the default language.
    * @param defaultLang The code of the default language (e.g. 'eo').
    */
-  constructor(messages: T, defaultLang?: string)
+  public constructor(messages: T, defaultLang?: string)
 
-  constructor(messages: T | LanguageMapDefinition<T>, defaultLang?: string) {
+  public constructor(
+    messages: T | LanguageMapDefinition<T>,
+    defaultLang?: string
+  ) {
     if (isFullDefinition(messages)) {
       this.definition = messages
     } else {
@@ -43,8 +46,10 @@ export class LanguageMap<T extends Messages> {
    * Merge new messages (or new languages) to the language map. This will create a new LanguageMap.
    * @param additional The additional messages.
    */
-  merge(additional: { [key: string]: Partial<Messages> }): LanguageMap<T> {
-    let _definition: LanguageMapDefinition<T> = { ...this.definition }
+  public merge(additional: {
+    [key: string]: Partial<Messages>
+  }): LanguageMap<T> {
+    const _definition: LanguageMapDefinition<T> = { ...this.definition }
     Object.keys(additional).forEach(lang => {
       if (!(lang in _definition)) {
         _definition[lang] = {}
@@ -60,22 +65,22 @@ export class LanguageMap<T extends Messages> {
    * Indicate if the map contains the given language.
    * @param lang The language to test.
    */
-  contains(lang: string): boolean {
-    return lang != 'default' && lang in this.definition
+  public contains(lang: string): boolean {
+    return lang !== 'default' && lang in this.definition
   }
 
   /**
    * Get available languages in this map.
    */
-  get availables(): string[] {
-    return Object.keys(this.definition).filter(l => l != 'default')
+  public get availables(): string[] {
+    return Object.keys(this.definition).filter(l => l !== 'default')
   }
 
   /**
    * Get the messages for the given language.
    * @param lang The language for which to get messages, unspecified to get default messages.
    */
-  messages(lang?: string): T | Partial<T> {
+  public messages(lang?: string): T | Partial<T> {
     if (lang && this.contains(lang)) {
       return this.definition[lang]
     } else {
@@ -86,14 +91,14 @@ export class LanguageMap<T extends Messages> {
   /**
    * Messages for default language.
    */
-  get default(): T {
+  public get default(): T {
     return this.definition.default
   }
 
   /**
    * Javascript representation of the LanguageMap. The result can be evaluated to a LanguageMapDefinition.
    */
-  get js(): string {
+  public get js(): string {
     if (!this._js) {
       this._js = '{'
       this._js += Object.keys(this.definition)

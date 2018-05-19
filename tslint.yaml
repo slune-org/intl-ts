@@ -1,0 +1,56 @@
+---
+defaultSeverity: error
+extends:
+  - tslint:latest
+rules:
+  arrow-parens:
+    options:
+      - ban-single-arg-parens
+  forin: false
+  interface-name: false
+  max-classes-per-file: false
+  member-access:
+    options:
+      - check-accessor
+      - check-constructor
+      - check-parameter-property
+  member-ordering:
+    options:
+      - order: fields-first
+  no-bitwise: false
+  # Keep the ability to use console, even if this should only be used for
+  # debuging purpose
+  no-console:
+    severity: warning
+  no-unused-expression:
+    options:
+      - allow-fast-null-checks
+      - allow-new
+  object-literal-sort-keys: false
+  ordered-imports:
+    options:
+      - grouped-imports: true
+        named-imports-order: lowercase-last
+  quotemark:
+    options:
+      - single
+      - jsx-double
+  semicolon:
+    options:
+      - never
+  trailing-comma:
+    options:
+      - multiline:
+          array: always
+          objects: always
+          functions: never
+          imports: always
+          exports: always
+          typeLiterals: never
+        singleline: never
+        esSpecCompliant: true
+  variable-name:
+    options:
+      - ban-keywords
+      - check-format
+      - allow-leading-underscore

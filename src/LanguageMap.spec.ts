@@ -1,35 +1,39 @@
+// tslint:disable:no-implicit-dependencies (dev dependencies are enough for tests)
+// tslint:disable:only-arrow-functions (mocha discourage to use arrow function)
+// tslint:disable:no-unused-expression (chai expressions are indeed side-effect)
 import { expect } from 'chai'
+
 import { LanguageMap } from '.'
-import { en, fr, fr_ca, eo, languageMap, allAvailables } from './data.spec'
+import { allAvailables, en, eo, fr, fr_ca, languageMap } from './data.spec'
 
 describe('LanguageMap', function() {
   it('must be created with a default language', function() {
-    const languageMap = new LanguageMap(en)
-    expect(languageMap.availables).to.be.empty
-    expect(languageMap.default.welcome).to.be.equal('Welcome!')
+    const testedLanguageMap = new LanguageMap(en)
+    expect(testedLanguageMap.availables).to.be.empty
+    expect(testedLanguageMap.default.welcome).to.equal('Welcome!')
   })
 
   it('must be fully created, starting with definition', function() {
-    const languageMap = new LanguageMap({ default: en, en, fr }).merge({
+    const testedLanguageMap = new LanguageMap({ default: en, en, fr }).merge({
       fr_ca,
       eo,
     })
-    expect(languageMap.availables).to.have.members(allAvailables)
+    expect(testedLanguageMap.availables).to.have.members(allAvailables)
   })
 
   it('must be fully created, starting with default language', function() {
-    const languageMap = new LanguageMap(en, 'en')
+    const testedLanguageMap = new LanguageMap(en, 'en')
       .merge({ fr, fr_ca })
       .merge({ eo })
-    expect(languageMap.availables).to.have.members(allAvailables)
+    expect(testedLanguageMap.availables).to.have.members(allAvailables)
   })
 
   it('must replace existing message for a language', function() {
-    const languageMap = new LanguageMap({ default: en, en, fr }).merge({
+    const testedLanguageMap = new LanguageMap({ default: en, en, fr }).merge({
       fr: fr_ca,
     })
-    expect(languageMap.messages('fr').hello).to.be.equal(fr_ca.hello)
-    expect(languageMap.messages('fr').welcome).to.be.equal(fr.welcome)
+    expect(testedLanguageMap.messages('fr').hello).to.equal(fr_ca.hello)
+    expect(testedLanguageMap.messages('fr').welcome).to.equal(fr.welcome)
   })
 
   it('must indicate if a language is supported', function() {
@@ -47,12 +51,12 @@ describe('LanguageMap', function() {
   })
 
   it('must give required messages', function() {
-    expect(languageMap.messages('eo')).to.be.equal(eo)
+    expect(languageMap.messages('eo')).to.equal(eo)
   })
 
   it('must give default messages', function() {
-    expect(languageMap.default).to.be.equal(en)
-    expect(languageMap.messages()).to.be.equal(languageMap.default)
+    expect(languageMap.default).to.equal(en)
+    expect(languageMap.messages()).to.equal(languageMap.default)
   })
 
   it('must be immutable', function() {
@@ -64,11 +68,12 @@ describe('LanguageMap', function() {
   })
 
   it('must create Javascript string', function() {
-    let messages = {}
+    const messages = {}
     const js = languageMap.js
+    // tslint:disable-next-line:no-eval (need to evaluate produced JSon)
     eval('messages=' + js)
     const duplicate = new LanguageMap(messages)
     expect(duplicate.availables).to.have.members(allAvailables)
-    expect(languageMap.js).to.be.equal(js)
+    expect(languageMap.js).to.equal(js)
   })
 })

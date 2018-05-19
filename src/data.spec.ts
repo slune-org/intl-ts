@@ -42,6 +42,7 @@ export const fr: langType = {
 }
 
 // Canada french version — partial
+// tslint:disable-next-line:variable-name (keep language code)
 export const fr_ca: Partial<langType> = {
   hello: (name: string) => `Allo ${name}`,
 }
