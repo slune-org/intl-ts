@@ -88,7 +88,7 @@ const languageMap = sync(`${__dirname}/*.js`)
   .map(file => basename(file, '.js'))
   .filter(language => language !== 'index')
   .map(language => require(`./${language}`).messages)
-  .reduce((map, language) => map.add(language), new LanguageMap(en))
+  .reduce((map, language) => map.merge(language), new LanguageMap(en))
 
 export const lang = new Intl<langType>(languageMap, [process.env.LANG || ''])
 ```
