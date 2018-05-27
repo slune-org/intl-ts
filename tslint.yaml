@@ -18,10 +18,6 @@ rules:
     options:
       - order: fields-first
   no-bitwise: false
-  # Keep the ability to use console, even if this should only be used for
-  # debuging purpose
-  no-console:
-    severity: warning
   no-unused-expression:
     options:
       - allow-fast-null-checks

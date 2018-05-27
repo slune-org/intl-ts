@@ -3,6 +3,7 @@
     "target": "es5",
     "declaration": true,
     "sourceMap": true,
+    "lib": ["dom", "es2017"],
     "rootDir": "src",
     "outDir": "dist",
     "moduleResolution": "node",
