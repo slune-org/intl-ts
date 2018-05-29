@@ -1,9 +1,9 @@
-# intl-ts - Encore une autre bibliothèque d'internationalisation à typage sûr
+# intl-ts - Bibliothèque d'internationalisation à typage sûr
 
 intl-ts est une bibliothèque d'internationalisation (i18n) pour TypeScript. Le paquet est compilé en ES5 et peut donc également être utilisé par des applications JavaScript. Ses principales caractéristiques sont :
 
-* Typage sûr : l'utilisation d'un mauvais nom de message ou du mauvais type de paramètre est détecté à la compilation.
-* Immuable : excepté pour la représentation d'une `LanguageMap` en JavaScript (à cause d'une initialisation paresseuse), l'état des objets ne changera jamais. Un nouvel objet est créé lors de l'appel à `LanguageMap.merge` ou `Intl.changePreferences`. Idéal pour la plupart des cadres basés sur les états, tel que React.
+* Typage sûr : l'utilisation d'un mauvais nom de message ou du mauvais type de paramètre est détecté à la compilation. Si votre EDI le permet, vous pouvez même avoir la complétion pour les noms de message.
+* Immuable : excepté pour la représentation d'une `LanguageMap` en JavaScript (à cause d'une initialisation paresseuse), l'état des objets ne changera jamais. Un nouvel objet est créé lors de l'appel à `LanguageMap.merge` ou `Intl.$withPreferences`. Idéal pour la plupart des cadres basés sur les états, tel que React/Redux.
 * Agnostique : peut être utilisé à la fois côté serveur et côté navigateur.
 
 # Installation
@@ -84,6 +84,8 @@ const eo: Partial<langType> = {
 }
 ```
 
+Notez que les noms des messages _ne doivent pas contenir l'un des mots-clés_ de l'[API Intl](doc/fr/api.md#intlt-extends-messages).
+
 * Créez la table des langues correspondante :
 
 ```typescript
@@ -105,12 +107,12 @@ Notez que vous devriez utiliser uniquement des minuscules, chiffres et souligné
 * Créez l'objet d'internationalisation et utilisez-le !
 
 ```typescript
-let lang = new Intl<langType>(languageMap, ['eo', 'fr-CA'])
-lang.t('welcome') // 'Bonvenon!'
-lang.t('showElementCount', 0) // 'Il n’y a pas d’éléments' — La compilation vérifie que 0 est bien un nombre
+const lang = new Intl<langType>(languageMap, ['eo', 'fr-CA'])
+lang.welcome() // 'Bonvenon!'
+lang.showElementCount(0) // 'Il n’y a pas d’éléments' — La compilation vérifie que 0 est bien un nombre
 ```
 
 # Documentation
 
 * [Documentation de l'API](api.md)
-* [Exemples de code](examples.md)
+* [Exemples de code](tips.md)

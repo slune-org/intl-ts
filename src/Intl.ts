@@ -1,202 +1,141 @@
 import { LanguageMap } from './LanguageMap'
-import {
-  Message0,
-  Message1,
-  Message2,
-  Message3,
-  Message4,
-  Message5,
-  Message6,
-  Messages,
-} from './Messages'
+import { MessageDirect, MessageParams, Messages } from './Messages'
+
+export type MessageFunction<
+  T extends MessageDirect | MessageParams<any, any, any, any, any, any>
+> = T extends string ? () => string : T
 
 /**
- * Main class managing internationalization. Intl objects are immutable.
+ * The default functions and data for the Intl object.
  */
-export class Intl<T extends Messages> {
-  public readonly preferences: ReadonlyArray<string>
-
+export interface IntlPrototype<T extends Messages> {
   /**
-   * Create a new Intl.
-   * @param languages The LanguageMap to use to get the messages.
-   * @param preferences The preferred languages, ordered.
-   * @param createGeneric True to create generic languages in preferences (e.g. will add 'en' for 'en-US').
+   * The retained preferences.
    */
-  public constructor(
-    private readonly languages: LanguageMap<T>,
-    preferences?: ReadonlyArray<string>,
-    createGeneric: boolean = true
-  ) {
-    const _preferences: string[] = []
-    if (preferences) {
-      for (const preference of Intl.formatPreferences(
-        preferences,
-        createGeneric
-      )) {
-        if (
-          _preferences.indexOf(preference) < 0 &&
-          this.languages.contains(preference)
-        ) {
-          _preferences.push(preference)
-        }
-      }
-    }
-    this.preferences = _preferences
-  }
-
-  private static formatPreferences(
-    preferences: ReadonlyArray<string>,
-    createGeneric: boolean
-  ): string[] {
-    const formattedPreferences: string[] = []
-    for (const preference of preferences) {
-      const portions: string[] = preference.split(/(?:[^A-Za-z0-9])/)
-      while (portions.length > 0) {
-        formattedPreferences.push(portions.join('_').toLowerCase())
-        portions.pop()
-        if (!createGeneric) {
-          break
-        }
-      }
-    }
-    return formattedPreferences
-  }
-
-  /**
-   * Change the preferred language. This will create a new Intl object.
-   * @param preferences The preferred languages, ordered.
-   * @param createGeneric True to create generic languages in preferences (e.g. will add 'en' for 'en-US').
-   */
-  public changePreferences(
-    preferences: ReadonlyArray<string>,
-    createGeneric: boolean = true
-  ): Intl<T> {
-    return new Intl(this.languages, preferences, createGeneric)
-  }
-
-  /**
-   * Get the translated message.
-   * @param name The name of the message to get.
-   */
-  public t<O extends Messages & { [P in K]: Message0 }, K extends keyof O>(
-    this: Intl<O>,
-    name: K
-  ): string
-
-  /**
-   * Get the translated message.
-   * @param name The name of the message to get.
-   */
-  public t<
-    O extends Messages & { [P in K]: Message1<P1> },
-    K extends keyof O,
-    P1
-  >(this: Intl<O>, name: K, p1: P1): string
-
-  /**
-   * Get the translated message.
-   * @param name The name of the message to get.
-   */
-  public t<
-    O extends Messages & { [P in K]: Message2<P1, P2> },
-    K extends keyof O,
-    P1,
-    P2
-  >(this: Intl<O>, name: K, p1: P1, p2: P2): string
-
-  /**
-   * Get the translated message.
-   * @param name The name of the message to get.
-   */
-  public t<
-    O extends Messages & { [P in K]: Message3<P1, P2, P3> },
-    K extends keyof O,
-    P1,
-    P2,
-    P3
-  >(this: Intl<O>, name: K, p1: P1, p2: P2, p3: P3): string
-
-  /**
-   * Get the translated message.
-   * @param name The name of the message to get.
-   */
-  public t<
-    O extends Messages & { [P in K]: Message4<P1, P2, P3, P4> },
-    K extends keyof O,
-    P1,
-    P2,
-    P3,
-    P4
-  >(this: Intl<O>, name: K, p1: P1, p2: P2, p3: P3, p4: P4): string
-
-  /**
-   * Get the translated message.
-   * @param name The name of the message to get.
-   */
-  public t<
-    O extends Messages & { [P in K]: Message5<P1, P2, P3, P4, P5> },
-    K extends keyof O,
-    P1,
-    P2,
-    P3,
-    P4,
-    P5
-  >(this: Intl<O>, name: K, p1: P1, p2: P2, p3: P3, p4: P4, p5: P5): string
-
-  /**
-   * Get the translated message.
-   * @param name The name of the message to get.
-   */
-  public t<
-    O extends Messages & { [P in K]: Message6<P1, P2, P3, P4, P5, P6> },
-    K extends keyof O,
-    P1,
-    P2,
-    P3,
-    P4,
-    P5,
-    P6
-  >(
-    this: Intl<O>,
-    name: K,
-    p1: P1,
-    p2: P2,
-    p3: P3,
-    p4: P4,
-    p5: P5,
-    p6: P6
-  ): string
-
-  public t<
-    O extends Messages & { [P in K]: (...args: any[]) => string },
-    K extends keyof O
-  >(this: Intl<O>, name: K, ...args: any[]): string {
-    const message = this.getMessage(name)
-    if (typeof message === 'string') {
-      return message
-    } else {
-      return (message as (...args: any[]) => string)(...args)
-    }
-  }
-
-  /**
-   * Get the message (string or function) with the given name, in the most accurate language.
-   * @param name The name of the message.
-   */
-  public getMessage<K extends keyof T>(name: K): T[K] {
-    for (const preference of this.preferences) {
-      const language: Partial<T> = this.languages.messages(preference)
-      if (name in language) {
-        return language[name] as T[K]
-      }
-    }
-    return this.languages.default[name]
-  }
+  readonly $preferences: ReadonlyArray<string>
 
   /**
    * The underlying language map.
    */
-  public get languageMap(): LanguageMap<T> {
-    return this.languages
+  readonly $languageMap: LanguageMap<T>
+
+  /**
+   * Create a clone of this Intl object with the given preferences.
+   * @param preferences The new preferences.
+   * @param createGenerics True to create generic languages.
+   */
+  $withPreferences(
+    preferences: ReadonlyArray<string>,
+    createGenerics?: boolean
+  ): Intl<T>
+
+  /**
+   * Get the message function for the given name, in the most accurate language.
+   * @param name The name of the message.
+   */
+  $getMessageFunction<K extends keyof T>(name: K): MessageFunction<T[K]>
+}
+
+export type IntlMessages<T extends Messages> = {
+  [P in keyof T]: MessageFunction<T[P]>
+}
+
+/**
+ * Main type for internationalization. Intl objects are immutable.
+ */
+export type Intl<T extends Messages> = IntlPrototype<T> & IntlMessages<T>
+
+/**
+ * Format the preferences.
+ * @param preferences The preferences.
+ * @param createGenerics Create the generic preferences.
+ */
+function formatPreferences(
+  preferences: ReadonlyArray<string>,
+  createGenerics: boolean
+): string[] {
+  const formattedPreferences: string[] = []
+  for (const preference of preferences) {
+    const portions: string[] = preference.split(/(?:[^A-Za-z0-9])/)
+    while (portions.length > 0) {
+      formattedPreferences.push(portions.join('_').toLowerCase())
+      portions.pop()
+      if (!createGenerics) {
+        break
+      }
+    }
+  }
+  return formattedPreferences
+}
+
+/**
+ * Create a new Intl.
+ * @param languageMap The Language map to use to get the messages.
+ * @param preferences The preferred languages, ordered.
+ * @param createGenerics True to create generic languages in preferences (e.g. will add 'en' for 'en-US').
+ */
+// tslint:disable-next-line:variable-name
+export const Intl: {
+  prototype: Intl<any>
+  new <T extends Messages>(
+    languageMap: LanguageMap<T>,
+    preferences?: ReadonlyArray<string>,
+    createGenerics?: boolean
+  ): Intl<T>
+} = function<T extends Messages>(
+  this: Intl<T>,
+  languageMap: LanguageMap<T>,
+  preferences?: ReadonlyArray<string>,
+  createGenerics: boolean = true
+): void {
+  const self: any = this // tslint:disable-line:no-this-assignment
+  self.$languageMap = languageMap
+  const _preferences: string[] = []
+  if (preferences) {
+    for (const preference of formatPreferences(preferences, createGenerics)) {
+      if (
+        !_preferences.includes(preference) &&
+        this.$languageMap.contains(preference)
+      ) {
+        _preferences.push(preference)
+      }
+    }
+  }
+  self.$preferences = _preferences
+  for (const key in this.$languageMap.default) {
+    if (key in self) {
+      throw new Error(`Entry ${key} is not permitted in language map`)
+    }
+    self[key] = this.$getMessageFunction(key)
+  }
+} as any
+
+Intl.prototype.$withPreferences = function<T extends Messages>(
+  this: Intl<T>,
+  preferences: ReadonlyArray<string>,
+  createGenerics?: boolean
+): Intl<T> {
+  return new Intl(this.$languageMap, preferences, createGenerics)
+}
+
+Intl.prototype.$getMessageFunction = function<
+  T extends Messages,
+  K extends keyof T
+>(this: Intl<T>, name: K): MessageFunction<T[K]> {
+  let message: T[K] | null = null
+  for (const preference of this.$preferences) {
+    const language: Partial<T> = this.$languageMap.messages(preference)
+    if (name in language) {
+      message = language[name] as T[K]
+      break
+    }
+  }
+  if (!message) {
+    message = this.$languageMap.default[name]
+  }
+  if (typeof message === 'string') {
+    return (() => message) as MessageFunction<T[K]>
+  } else {
+    return message as MessageFunction<T[K]>
   }
 }

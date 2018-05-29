@@ -1,14 +1,14 @@
-# Code snippets
+# Astuces
 
-Here are some snippets of how the library can be used.
+Voici quelques exemples de la façon d'utiliser la bibliothèque.
 
-# Node server
+# Serveur Node
 
-These examples suppose you have a Node.js server with a `locale` directory containing an `index.ts` file and one file per language, the name of the file be the language code.
+Ces exemples considèrent que vous avez un serveur Node.js avec un répertoire `locale` qui contient un fichier `index.ts` ainsi qu'un fichier pour chaque langue, le nom de ce fichier étant le code de langue.
 
-## Language files
+## Fichiers de langue
 
-The main file will be for the default (reference) language.
+Le fichier principal sera pour la langue par défaut (référence).
 
 ```typescript
 // locale/en.ts
@@ -31,7 +31,7 @@ export const messages = {
 }
 ```
 
-Complete language files will match the default language type to ensure no entry is forgotten.
+Les fichiers de langue complets seront typés sur la langue par défaut afin de vérifier qu'aucune entrée n'est oubliée.
 
 ```typescript
 // locale/fr.ts
@@ -56,7 +56,7 @@ export const messages: typeof default = {
 }
 ```
 
-Partial language files will match a `Partial` of the default language type, this will only ensure that parameters are matching.
+Les fichiers de langue partiels seront typés sur un objet `Partial` du type de langue par défaut. Cela permettra simplement de s'assurer que les paramètres correspondent.
 
 ```typescript
 // locale/eo.ts
@@ -68,12 +68,12 @@ export const messages: Partial<typeof default> = {
 }
 ```
 
-## Index file
+## Fichier d'index
 
-The purpose of the index file is to merge all this and create the internationalization object. It will export:
+L'objectif du fichier d'index est de fusionner tout cela et créer l'objet d'internationalisation. Il exportera :
 
-* the type of the messages (which is the type of the default language messages), because it will be needed in mutliple places,
-* a reference to the internationalization object.
+* le type des messages (c'est à dire le type des messages de la langue par défaut), car il sera utilisé à plusieurs endroits ;
+* une référence sur l'objet d'internationalisation.
 
 ```typescript
 // locale/index.ts
@@ -93,20 +93,20 @@ const languageMap = sync(`${__dirname}/*.js`)
 export const lang = new Intl<langType>(languageMap, [process.env.LANG || ''])
 ```
 
-## Usage
+## Utilisation
 
-At server side, usage is rather straightforward.
+L'utilisation du côté serveur est relativement triviale.
 
 ```typescript
 import { lang } from './locale/index'
 
 const name = 'John Doe'
-console.info(lang.t('hello', name))
+console.info(lang.hello(name))
 ```
 
-## Send data to browser
+## Envoi des données au navigateur
 
-The following snippet can be used in the `express` configuration of a `React` application to send needed data to the browser. An `index` template will be filled with the values of `htmlContent` and `preloaded`. A `Layout` component is expected to be entry point of the `React` part.
+L'exemple suivant peut être utilisée dans la configuration `express` d'une application `React` pour envoyer les données nécessaires au navigateur. Un fichier modèle `index` sera complété avec les valeurs de `htmlContent` et `preloaded`. Un composant `Layout` est supposé être le point d'entrée de la partie `React`.
 
 ```typescript
 import * as express from 'express'
@@ -114,7 +114,7 @@ import { renderToString } from 'react-dom/server'
 import Layout from './components/Layout'
 import { lang } from './locale/index'
 
-// Calculate preferred languages order based on accept-language header
+// Calculer l'ordre des langues préférées, basé sur l'en-tête accept-language
 calculatePreferredLanguages(languages?: string | string[]): string[] {
   let preferred: string[] = []
   if (languages) {
@@ -132,7 +132,7 @@ app.use((req, res) => {
   const preferredLanguages = calculatePreferredLanguages(
     req.headers['accept-language']
   )
-  const reqLang = lang.changePreferences(preferredLanguages, false)
+  const reqLang = lang.$withPreferences(preferredLanguages, false)
   const htmlContent = renderToString(<Layout />)
   const preloaded = `window.__PRELOADED_STATE__=${JSON.stringify({
     preferredLanguages,
@@ -143,9 +143,9 @@ app.use((req, res) => {
 })
 ```
 
-# Browser side
+# Côté navigateur
 
-The following snippet can be used to retrieve data prepared at server side (see previous code snippet).
+L'exemple suivant peut être utilisé pour récupérer les données préparées côté serveur (cf. exemple précédent).
 
 ```typescript
 import Intl, { LanguageMapDefinition, LanguageMap } from 'intl-ts'
@@ -167,3 +167,33 @@ const lang = new Intl<langType>(
   preferredLanguages
 )
 ```
+
+# Laisser l'utilisateur choisir sa langue
+
+L'exemple suivant montre comment préparer les options d'une boite de sélection pour permettre à l'utilisateur de choisir sa langue parmi celles disponibles.
+
+Pour chaque langue, il faut ajouter une clé d'identification. Nous utiliserons `$` dans cet exemple :
+
+```typescript
+// locale/en.ts
+export const messages = {
+  $: 'English',
+}
+```
+
+Cette clé peut ensuite être utilisée, par exemple dans un composant React :
+
+```typescript
+// components/Lang.ts
+lang.$languageMap.availables.map(langCode => (
+  <option key={langCode} value={langCode}>
+    {lang.$languageMap.messages(langCode).$ || langCode}
+  </option>
+))
+```
+
+Ici, si la langue disponible ne définie pas la clé d'identification, on utilise simplement le code de langue.
+
+# Formater dates, nombres ou objets
+
+Une fonction de formatage prend des paramètres et renvoie une chaine de caractère. C'est exactement ainsi que les fonctions de messages sont définies. Il est donc très simple de définir dans la table des message une fonction qui, en réalité, sera utilisée pour convertir n'importe quelle valeur en une chaine, et l'appeler au besoin. La méthode de formatage sera envoyée au besoin du serveur au navigateur comme tous les autres messages.

@@ -6,7 +6,7 @@ Ne typez pas votre langue par défaut avec `Message`, car dans ce cas, `typeof` 
 
 # LanguageMapDefinition\<T extends Messages>
 
-Cette interface décrit les données d'une table de langues complète. Elle peut être utilisée pour récupérer une table de langues sérialisée, par exemple, lorsqu'une table de langue est transmise par un serveur à un navigateur (cf. [exemples de code](./examples.md)).
+Cette interface décrit les données d'une table de langues complète. Elle peut être utilisée pour récupérer une table de langues sérialisée, par exemple, lorsqu'une table de langue est transmise par un serveur à un navigateur (cf. [astuces](./tips.md)).
 
 Le paramètre générique `T` représente le type de la langue par défaut.
 
@@ -28,11 +28,11 @@ Créer une table de langue basée sur les messages par défaut. Si le paramètre
 
 ## merge(additional: { [key: string]: Partial\<Messages> }): LanguageMap\<T>
 
-Créer une nouvelle table de langue contenant les messages fournis, fusionnés avec la définition actuelle. Le paramètre `additional` peut potentiellement remplacer des messages existants, créer de nouvelles langues ou même étendre la liste des messages (cas des messages spécifiques pour une extention, par exemple).
+Créer une nouvelle table de langue contenant les messages fournis, fusionnés avec la définition actuelle. Le paramètre `additional` fourni des messages qui peuvent potentiellement remplacer des messages existants, créer de nouvelles langues ou même étendre la liste des messages (cas des messages spécifiques pour une extention, par exemple).
 
 ## contains(lang: string): boolean
 
-Indiquer si la table de langues contient la langue donnée. Cette méthode ne peut pas être utilisée pour tester l'existance de la langue par défaut, mais la langue par défaut est toujours présente.
+Indiquer si la table de langues contient la langue donnée. Cette méthode ne peut pas être utilisée pour tester l'existance de la langue `default`, mais cette langue (par défaut) est toujours présente.
 
 ## availables: string[]
 
@@ -56,28 +56,32 @@ Cette classe gère l'objet d'internationalisation. Elle est basée sur une table
 
 Le paramètre générique `T` représente le type de la langue par défaut.
 
-## constructor(languages: LanguageMap\<T>, preferences?: ReadonlyArray\<string>, createGeneric: boolean = true)
+## constructor(languages: LanguageMap\<T>, preferences?: ReadonlyArray\<string>, createGenerics: boolean = true)
 
-Créer un objet d'internationalisation utilisant la table de langue donnée. Si le paramètre `preferences` est fourni, sa valeur sera utilisée pour l'ordre des préférences de langues de l'utilisateur. S'il est vrai, le paramètre `createGeneric` déclenche l'ajout automatique de code de langues plus génériques dans les préférences. Par exemple, si les préférences contiennent `no-NO-NY`, cela ajoutera automatiquement `no-NO` et `no` dans cet ordre après cette entrée. Ce paramètre peut être faux, par exemple dans le cas où l'on utilise les préférences linguistiques du navigateur, puisque l'utilisateur final peut déjà définir des préférences spécifiques et génériques.
+Créer un objet d'internationalisation utilisant la table de langue donnée. Si le paramètre `preferences` est fourni, sa valeur sera utilisée pour l'ordre des préférences de langues de l'utilisateur. S'il est vrai, le paramètre `createGenerics` déclenche l'ajout automatique de code de langues plus génériques dans les préférences. Par exemple, si les préférences contiennent `no-NO-NY`, cela ajoutera automatiquement `no-NO` et `no` dans cet ordre après cette entrée. Ce paramètre peut être faux, par exemple dans le cas où l'on utilise les préférences linguistiques du navigateur, puisque l'utilisateur final peut déjà définir des préférences spécifiques et génériques.
 
 Notez que les codes de langue sont formatés en minuscules et chiffres séparés par des soulignés. Cela signifie qu'au lieu de `no-NO-NY`, le code de langue réellement utilisé sera `no_no_ny`. Cela permet de normaliser l'écriture des codes de langue, en utilisant des caractères valides en tant que clés d'objet en TypeScript (évitant l'utilisation de guillemets).
 
-## changePreferences(preferences: ReadonlyArray\<string>, createGeneric: boolean = true): Intl\<T>
+Notez que les noms des messages _ne doivent pas contenir l'un des mots-clés_ de l'API. Afin d'éviter les collision de noms, les méthodes et données de l'API commencent par le caractère $.
+
+## $withPreferences(preferences: ReadonlyArray\<string>, createGenerics: boolean = true): Intl\<T>
 
 Créer un nouvel objet d'internationalisation avec la même table de langues que celui-ci, mais de nouvelles préférences.
 
-## preferences: ReadonlyArray\<string>
+## $preferences: ReadonlyArray\<string>
 
-Les préférences réellement utilisées par l'objet. Seules les langues trouvées dans la table de langue sont conservées.
+Les préférences réellement utilisées par l'objet. Seules les langues trouvées dans la table de langues sont conservées.
 
-## t\<K extends keyof T>(name: K, ...args: any[]): string
-
-Construire le message correspondant au nom donné avec les paramètres donnés dans la langue la plus appropriée. Cette méthode est en réalité surchargée afin que le type des paramètres soit controllé lors de la compilation par rapport aux paramètres attendus par le message.
-
-## getMessage\<K extends keyof T>(name: K): T[K]
-
-Récupérer le message correspondant au nom donné dans la langue la plus appropriée. Ce message n'est pas formaté et peut être soit une chaine de caractère, soit une fonction.
-
-## languageMap: LanguageMap\<T>
+## $languageMap: LanguageMap\<T>
 
 Récupérer la table de langues utilisée. Ce paramètre est en lecture seulement.
+
+## $getMessageFunction\<K extends keyof T>(name: K): MessageFunction\<T[K]>
+
+Récupérer le message correspondant au nom donné dans la langue la plus appropriée. Ce message est transformé en fonction s'il s'agit d'une chaine de caractère.
+
+## Toutes les entrées par défaut de la table de langues
+
+Construire le message correspondant au nom de la fonction avec les paramètres donnés (dont le type est contrôlé) dans la langue la plus appropriée.
+
+Notez que les noms des messages _ne doivent pas contenir l'un des mots-clés_ de l'API. Afin d'éviter les collision de noms, les méthodes et données de l'API commencent par le caractère $.

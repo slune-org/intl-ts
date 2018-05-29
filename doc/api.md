@@ -6,7 +6,7 @@ Do not type your default language with `Message`, because if you do so, `typeof`
 
 # LanguageMapDefinition\<T extends Messages>
 
-This interface describes the data of a full language map. It may be used to retrieve a serialized language map, for exemple when a language map is transmitted from server to browser (see [code snippets](./examples.md)).
+This interface describes the data of a full language map. It may be used to retrieve a serialized language map, for exemple when a language map is transmitted from server to browser (see [tips](./tips.md)).
 
 The generic parameter `T` represents the type of the default language.
 
@@ -28,11 +28,11 @@ Create a language map base on the default messages. If the `defaultLang` paramet
 
 ## merge(additional: { [key: string]: Partial\<Messages> }): LanguageMap\<T>
 
-Create a new language map containing given messages merged to current definition. The `additional` parameter may replace existing strings, create new languages or even extend the string list (e.g. plugin specific messages).
+Create a new language map containing given messages merged to current definition. The `additional` parameter provides messages which may replace existing strings, create new languages or even extend the string list (e.g. plugin specific messages).
 
 ## contains(lang: string): boolean
 
-Indicate if the language map contains the given language. This cannot be used to test existance of default language, but default language is always present.
+Indicate if the language map contains the given language. This cannot be used to test existance of `default` language, but default language is always present.
 
 ## availables: string[]
 
@@ -56,28 +56,32 @@ This class is managing the internationalization object. It is based on a languag
 
 The generic parameter `T` represents the type of the default language.
 
-## constructor(languages: LanguageMap\<T>, preferences?: ReadonlyArray\<string>, createGeneric: boolean = true)
+## constructor(languages: LanguageMap\<T>, preferences?: ReadonlyArray\<string>, createGenerics: boolean = true)
 
-Create an internationalization object using the given language map. If `preferences` parameter is provided, its value will be used as the user preferred language order. If true, the parameter `createGeneric` allow more generic language codes to be automatically added in preferences. For example, if preference contains `no-NO-NY`, it will automatically add `no-NO` and `no` in this order after this entry. This parameter may be set to false, for example when using browser preferred languages, as end-user may already define specific and generic preferences.
+Create an internationalization object using the given language map. If `preferences` parameter is provided, its value will be used as the user preferred language order. If true, the parameter `createGenerics` allow more generic language codes to be automatically added in preferences. For example, if preference contains `no-NO-NY`, it will automatically add `no-NO` and `no` in this order after this entry. This parameter may be set to false, for example when using browser preferred languages, as end-user may already define specific and generic preferences.
 
-Note that language code are formatted to lowercase and digit separated with underscores. So, instead of `no-NO-NY`, the actual language code will be `no_no_ny`. This will ensure a single way of writting language codes, using characters which are valid as object keys in TypeScript (preventing the need to use quotes).
+Note that language codes are formatted to lowercase and digit separated with underscores. So, instead of `no-NO-NY`, the actual language code will be `no_no_ny`. This will ensure a single way of writting language codes, using characters which are valid as object keys in TypeScript (preventing the need to use quotes).
 
-## changePreferences(preferences: ReadonlyArray\<string>, createGeneric: boolean = true): Intl\<T>
+Note that the message names _must not contain one of the keyword_ of the API. In order to prevent name collision, API methods and data begin with a $ character.
+
+## $withPreferences(preferences: ReadonlyArray\<string>, createGenerics: boolean = true): Intl\<T>
 
 Create a new internationalization object with the same language map as this one but new preferences.
 
-## preferences: ReadonlyArray\<string>
+## $preferences: ReadonlyArray\<string>
 
 The preferences really used by the object. Only languages which are found in the language map are retained.
 
-## t\<K extends keyof T>(name: K, ...args: any[]): string
-
-Build the message for the given name with given parameters in the most appropriate language. This method is actually overridden so that parameter types are checked at compile time against message expected parameter types.
-
-## getMessage\<K extends keyof T>(name: K): T[K]
-
-Get the message corresponding to the given name in the most appropriate language. The message is not formatted and may be a string or a function.
-
-## languageMap: LanguageMap<T>
+## $languageMap: LanguageMap<T>
 
 Get the underlying language map. This parameter is read-only.
+
+## $getMessageFunction\<K extends keyof T>(name: K): MessageFunction\<T[K]>
+
+Get the message corresponding to the given name in the most appropriate language. The message is transformed into a function if it is a string.
+
+## All default language map keys
+
+Build the message string for the name used as function with given parameters (for which types will be checked) in the most appropriate language.
+
+Note that the language map keys _must not contain one of the reserved_ of the API. In order to prevent name collision, API methods and data begin with a $ character.
