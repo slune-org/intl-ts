@@ -13,9 +13,12 @@ export const en = {
         return 'There is one element'
       }
       default: {
-        return `There are ${count} elements`
+        return `There are ${en.formatNumber(count)} elements`
       }
     }
+  },
+  formatNumber: (num: number) => {
+    return `${num}.00`
   },
 }
 
@@ -35,9 +38,12 @@ export const fr: langType = {
         return 'Il y a un élément'
       }
       default: {
-        return `Il y a ${count} elements`
+        return `Il y a ${fr.formatNumber(count)} éléments`
       }
     }
+  },
+  formatNumber: (num: number) => {
+    return `${num},00`
   },
 }
 

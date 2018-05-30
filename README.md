@@ -4,12 +4,12 @@
 [![coverage](https://coveralls.io/repos/github/sveyret/intl-ts/badge.svg?branch=master)](https://coveralls.io/github/sveyret/intl-ts)
 [![issues](https://img.shields.io/github/issues/sveyret/intl-ts.svg)](https://github.com/sveyret/intl-ts/issues)
 
-# intl-ts - Yet another typesafe internationalization library
+# intl-ts - Typesafe internationalization library
 
 intl-ts is an i18n (internationlization) library for TypeScript. The package is compiled in ES5 and so can also be used by JavaScript applications. Its main features are:
 
-* Type safe: using a wrong message name or the wrong type for the parameters will be checked at compile time.
-* Immutable: except for JavaScript representation of the `LanguageMap` (because of lazy initialization) object states will never change. New object is created when calling `LanguageMap.merge` or `Intl.changePreferences`. Good for most state-aware framework, like React.
+* Type safe: using a wrong message name or the wrong type for the parameters will be checked at compile time. If your IDE allow it, you may even have completion for message names.
+* Immutable: except for JavaScript representation of the `LanguageMap` (because of lazy initialization) object states will never change. New object is created when calling `LanguageMap.merge` or `Intl.$withPreferences`. Good for most state-aware framework, like React/Redux.
 * Agnostic: can be used both at server or browser side.
 
 # Installation
@@ -92,6 +92,8 @@ const eo: Partial<langType> = {
 }
 ```
 
+Note that the message names _must not contain one of the keyword_ of the [Intl API](doc/api.md#intlt-extends-messages).
+
 * Create the corresponding language map:
 
 ```typescript
@@ -113,12 +115,12 @@ Note that you should only use lowercases, digits and underscores as keys in lang
 * Create the internationalization object, and use it!
 
 ```typescript
-let lang = new Intl<langType>(languageMap, ['eo', 'fr-CA'])
-lang.t('welcome') // 'Bonvenon!'
-lang.t('showElementCount', 0) // 'Il n’y a pas d’éléments' — Compilation check that 0 is of type number
+const lang = new Intl<langType>(languageMap, ['eo', 'fr-CA'])
+lang.welcome() // 'Bonvenon!'
+lang.showElementCount(0) // 'Il n’y a pas d’éléments' — Compilation check that 0 is of type number
 ```
 
 # Documentation
 
 * [API documentation](doc/api.md)
-* [Code snippets](doc/examples.md)
+* [Code snippets](doc/tips.md)
