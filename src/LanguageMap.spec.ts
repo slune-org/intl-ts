@@ -68,7 +68,8 @@ describe('LanguageMap', function() {
   })
 
   it('must create Javascript string', function() {
-    const messages = {}
+    let messages
+    messages = {}
     const js = languageMap.js
     // tslint:disable-next-line:no-eval (need to evaluate produced JSon)
     eval('messages=' + js)
