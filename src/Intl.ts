@@ -76,7 +76,7 @@ function formatPreferences(
  */
 // tslint:disable-next-line:variable-name
 export const Intl: {
-  prototype: Intl<any>
+  prototype: Intl<Messages>
   new <T extends Messages>(
     languageMap: LanguageMap<T>,
     preferences?: ReadonlyArray<string>,
