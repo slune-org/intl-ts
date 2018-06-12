@@ -196,4 +196,4 @@ Ici, si la langue disponible ne définie pas la clé d'identification, on utilis
 
 # Formater dates, nombres ou objets
 
-Une fonction de formatage prend des paramètres et renvoie une chaine de caractère. C'est exactement ainsi que les fonctions de messages sont définies. Il est donc très simple de définir dans la table des message une fonction qui, en réalité, sera utilisée pour convertir n'importe quelle valeur en une chaine, et l'appeler au besoin. La méthode de formatage sera envoyée au besoin du serveur au navigateur comme tous les autres messages.
+Une fonction de formatage prend des paramètres et renvoie une chaine de caractère. C'est exactement ainsi que les fonctions de messages sont définies. Il est donc très simple de définir dans la table des messages une fonction qui, en réalité, sera utilisée pour convertir n'importe quelle valeur en une chaine, et l'appeler au besoin. La méthode de formatage sera envoyée au besoin du serveur au navigateur comme tous les autres messages.

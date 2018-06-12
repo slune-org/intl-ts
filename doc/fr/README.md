@@ -1,6 +1,6 @@
 # intl-ts - Bibliothèque d'internationalisation à typage sûr
 
-intl-ts est une bibliothèque d'internationalisation (i18n) pour TypeScript. Le paquet est compilé en ES5 et peut donc également être utilisé par des applications JavaScript. Ses principales caractéristiques sont :
+intl-ts est une bibliothèque d'internationalisation (i18n) pour TypeScript. Le paquet est compilé en ES2015 et peut donc également être utilisé par des applications JavaScript, mais peut potentiellement requérir une transformation par Babel pour être utilisé par les navigateurs. Ses principales caractéristiques sont :
 
 * Typage sûr : l'utilisation d'un mauvais nom de message ou du mauvais type de paramètre est détecté à la compilation. Si votre EDI le permet, vous pouvez même avoir la complétion pour les noms de message.
 * Immuable : excepté pour la représentation d'une `LanguageMap` en JavaScript (à cause d'une initialisation paresseuse), l'état des objets ne changera jamais. Un nouvel objet est créé lors de l'appel à `LanguageMap.merge` ou `Intl.$withPreferences`. Idéal pour la plupart des cadres basés sur les états, tel que React/Redux.

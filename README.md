@@ -6,7 +6,7 @@
 
 # intl-ts - Typesafe internationalization library
 
-intl-ts is an i18n (internationlization) library for TypeScript. The package is compiled in ES5 and so can also be used by JavaScript applications. Its main features are:
+intl-ts is an i18n (internationlization) library for TypeScript. The package is compiled in ES2015 and so can also be used by JavaScript applications, but may require a Babel translation to be used with browsers. Its main features are:
 
 * Type safe: using a wrong message name or the wrong type for the parameters will be checked at compile time. If your IDE allow it, you may even have completion for message names.
 * Immutable: except for JavaScript representation of the `LanguageMap` (because of lazy initialization) object states will never change. New object is created when calling `LanguageMap.merge` or `Intl.$withPreferences`. Good for most state-aware framework, like React/Redux.
