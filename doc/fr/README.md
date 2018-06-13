@@ -84,7 +84,7 @@ const eo: Partial<langType> = {
 }
 ```
 
-Notez que les noms des messages _ne doivent pas contenir l'un des mots-clés_ de l'[API Intl](doc/fr/api.md#intlt-extends-messages).
+Notez que les noms des messages _ne doivent pas contenir l'un des mots-clés_ de l'[API Intl](api.md#intlt-extends-messages).
 
 * Créez la table des langues correspondante :
 
