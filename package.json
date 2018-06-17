@@ -1,6 +1,6 @@
 {
   "name": "intl-ts",
-  "version": "3.0.2",
+  "version": "3.1.1",
   "description": "Internationalization library for TypeScript",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
