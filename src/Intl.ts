@@ -1,14 +1,10 @@
 import { LanguageMap } from './LanguageMap'
-import { MessageDirect, MessageParams, Messages } from './Messages'
-
-export type MessageFunction<
-  T extends MessageDirect | MessageParams<any, any, any, any, any, any>
-> = T extends string ? () => string : T
+import { MessageFunction, Messages } from './Messages'
 
 /**
  * The default functions and data for the Intl object.
  */
-export interface IntlPrototype<T extends Messages> {
+interface IntlPrototype<T extends Messages> {
   /**
    * The retained preferences.
    */
@@ -20,9 +16,17 @@ export interface IntlPrototype<T extends Messages> {
   readonly $languageMap: LanguageMap<T>
 
   /**
-   * Create a clone of this Intl object with the given preferences.
+   * Change the preferences for this Intl object.
    * @param preferences The new preferences.
-   * @param createGenerics True to create generic languages.
+   * @param createGenerics If true (default), create generic languages.
+   */
+  $changePreferences(
+    preferences: ReadonlyArray<string>,
+    createGenerics?: boolean
+  ): this
+
+  /**
+   * Deprecated, create a new Intl object instead.
    */
   $withPreferences(
     preferences: ReadonlyArray<string>,
@@ -36,12 +40,12 @@ export interface IntlPrototype<T extends Messages> {
   $getMessageFunction<K extends keyof T>(name: K): MessageFunction<T[K]>
 }
 
-export type IntlMessages<T extends Messages> = {
+type IntlMessages<T extends Messages> = {
   [P in keyof T]: MessageFunction<T[P]>
 }
 
 /**
- * Main type for internationalization. Intl objects are immutable.
+ * Main type for internationalization.
  */
 export type Intl<T extends Messages> = IntlPrototype<T> & IntlMessages<T>
 
@@ -52,7 +56,7 @@ export type Intl<T extends Messages> = IntlPrototype<T> & IntlMessages<T>
  */
 function formatPreferences(
   preferences: ReadonlyArray<string>,
-  createGenerics: boolean
+  createGenerics: boolean = true
 ): string[] {
   const formattedPreferences: string[] = []
   for (const preference of preferences) {
@@ -69,53 +73,106 @@ function formatPreferences(
 }
 
 /**
- * Create a new Intl.
- * @param languageMap The Language map to use to get the messages.
- * @param preferences The preferred languages, ordered.
- * @param createGenerics True to create generic languages in preferences (e.g. will add 'en' for 'en-US').
+ * Calculate real preferences based on language map and given preferences.
+ * @param languageMap The language map.
+ * @param formattedPreferences The already formatted preferences.
  */
-// tslint:disable-next-line:variable-name
+function calculatePreferences(
+  languageMap: LanguageMap<any>,
+  formattedPreferences: string[]
+): string[] {
+  const preferences: string[] = []
+  for (const preference of formattedPreferences) {
+    if (!preferences.includes(preference) && languageMap.contains(preference)) {
+      preferences.push(preference)
+    }
+  }
+  return preferences
+}
+
+/**
+ * Create a new Intl.
+ * @param mapOrSource The Language map to use to get the messages, or the source Intl object to clone.
+ * @param preferences The preferred languages, ordered.
+ * @param createGenerics If true (default), create generic languages for preferences (e.g. will add 'en' for 'en-US').
+ */
+// tslint:disable-next-line:variable-name (building a special object)
 export const Intl: {
   prototype: Intl<Messages>
   new <T extends Messages>(
-    languageMap: LanguageMap<T>,
+    mapOrSource: LanguageMap<T> | Intl<T>,
     preferences?: ReadonlyArray<string>,
     createGenerics?: boolean
   ): Intl<T>
 } = function<T extends Messages>(
   this: Intl<T>,
-  languageMap: LanguageMap<T>,
+  mapOrSource: LanguageMap<T> | Intl<T>,
   preferences?: ReadonlyArray<string>,
-  createGenerics: boolean = true
+  createGenerics?: boolean
 ): void {
-  const self: any = this // tslint:disable-line:no-this-assignment
-  self.$languageMap = languageMap
-  const _preferences: string[] = []
-  if (preferences) {
-    for (const preference of formatPreferences(preferences, createGenerics)) {
-      if (
-        !_preferences.includes(preference) &&
-        this.$languageMap.contains(preference)
-      ) {
-        _preferences.push(preference)
+  // Create special properties
+  Object.defineProperty(this, '$languageMap', {
+    configurable: false,
+    enumerable: false,
+    value: mapOrSource instanceof Intl ? mapOrSource.$languageMap : mapOrSource,
+    writable: false,
+  })
+  Object.defineProperty(this, '$preferences', {
+    configurable: true, // Needed to make it observable
+    enumerable: false,
+    value: preferences
+      ? calculatePreferences(
+          this.$languageMap,
+          formatPreferences(preferences, createGenerics)
+        )
+      : [],
+    writable: true,
+  })
+
+  // Create (or clone) special functions
+  if (mapOrSource instanceof Intl) {
+    Object.assign(this, mapOrSource)
+  } else {
+    for (const key in this.$languageMap.default) {
+      if (key in this) {
+        throw new Error(`Entry ${key} is not permitted in language map`)
       }
+      Object.defineProperty(this, key, {
+        configurable: false,
+        enumerable: true,
+        value(this: Intl<T>, ...args: any[]) {
+          return (this.$getMessageFunction(key) as any)(...args)
+        },
+        writable: false,
+      })
     }
-  }
-  self.$preferences = _preferences
-  for (const key in this.$languageMap.default) {
-    if (key in self) {
-      throw new Error(`Entry ${key} is not permitted in language map`)
-    }
-    self[key] = this.$getMessageFunction(key)
   }
 } as any
+
+Intl.prototype.$changePreferences = function<T extends Messages>(
+  this: Intl<T>,
+  preferences: ReadonlyArray<string>,
+  createGenerics?: boolean
+): Intl<T> {
+  // tslint:disable-next-line:no-this-assignment
+  const thisAny: any = this
+  thisAny.$preferences = calculatePreferences(
+    this.$languageMap,
+    formatPreferences(preferences, createGenerics)
+  )
+  return this
+}
 
 Intl.prototype.$withPreferences = function<T extends Messages>(
   this: Intl<T>,
   preferences: ReadonlyArray<string>,
   createGenerics?: boolean
 ): Intl<T> {
-  return new Intl(this.$languageMap, preferences, createGenerics)
+  // tslint:disable-next-line:no-console (temporary deprecation message)
+  console.log(
+    'Warning: Intl.$withPreferences is deprecated — Create a new Intl instead'
+  )
+  return new Intl(this, preferences, createGenerics)
 }
 
 Intl.prototype.$getMessageFunction = function<

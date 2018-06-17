@@ -8,9 +8,9 @@
 
 intl-ts is an i18n (internationlization) library for TypeScript. The package is compiled in ES2015 and so can also be used by JavaScript applications, but may require a Babel translation to be used with browsers. Its main features are:
 
-* Type safe: using a wrong message name or the wrong type for the parameters will be checked at compile time. If your IDE allow it, you may even have completion for message names.
-* Immutable: except for JavaScript representation of the `LanguageMap` (because of lazy initialization) object states will never change. New object is created when calling `LanguageMap.merge` or `Intl.$withPreferences`. Good for most state-aware framework, like React/Redux.
-* Agnostic: can be used both at server or browser side.
+- Type safe: using a wrong message name or the wrong type for the parameters will be checked at compile time. If your IDE allow it, you may even have completion for message names.
+- Mutable or immutable: the library can be used in an immutable way (good for most state-aware framework, like React/Redux), or in a mutable way (for better performance).
+- Agnostic: can be used both at server or browser side.
 
 # Installation
 
@@ -36,7 +36,7 @@ Anyway, because English is the language of programming, the code, including vari
 
 # Usage
 
-* Create your language strings (messages):
+- Create your language strings (messages):
 
 ```typescript
 // English version — default
@@ -94,7 +94,7 @@ const eo: Partial<langType> = {
 
 Note that the message names _must not contain one of the keyword_ of the [Intl API](doc/api.md#intlt-extends-messages).
 
-* Create the corresponding language map:
+- Create the corresponding language map:
 
 ```typescript
 // Direct creation
@@ -112,7 +112,7 @@ const languageMap = new LanguageMap(en, 'en').merge({ fr, fr_ca }).merge({ eo })
 
 Note that you should only use lowercases, digits and underscores as keys in language maps, because language codes will be formatted this way by the `Intl` class.
 
-* Create the internationalization object, and use it!
+- Create the internationalization object, and use it!
 
 ```typescript
 const lang = new Intl<langType>(languageMap, ['eo', 'fr-CA'])
@@ -120,7 +120,16 @@ lang.welcome() // 'Bonvenon!'
 lang.showElementCount(0) // 'Il n’y a pas d’éléments' — Compilation check that 0 is of type number
 ```
 
+# Mutability
+
+Object states will never change except:
+
+- JavaScript representation of the `LanguageMap` (because of lazy initialization),
+- if you choose to update the language preferences with `Intl.$changePreferences`.
+
+A new object is created when calling `LanguageMap.merge`, and language preferences can be updated cloning the international object with `new Intl`.
+
 # Documentation
 
-* [API documentation](doc/api.md)
-* [Code snippets](doc/tips.md)
+- [API documentation](doc/api.md)
+- [Code snippets](doc/tips.md)

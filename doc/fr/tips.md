@@ -132,7 +132,7 @@ app.use((req, res) => {
   const preferredLanguages = calculatePreferredLanguages(
     req.headers['accept-language']
   )
-  const reqLang = lang.$withPreferences(preferredLanguages, false)
+  const reqLang = new Intl(lang, preferredLanguages, false)
   const htmlContent = renderToString(<Layout />)
   const preloaded = `window.__PRELOADED_STATE__=${JSON.stringify({
     preferredLanguages,

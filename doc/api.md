@@ -64,9 +64,17 @@ Note that language codes are formatted to lowercase and digit separated with und
 
 Note that the message names _must not contain one of the keyword_ of the API. In order to prevent name collision, API methods and data begin with a $ character.
 
+## constructor(intl: Intl\<T>, preferences?: ReadonlyArray\<string>, createGenerics: boolean = true)
+
+Clone the given internationalization object with new preferences. In other words, this will create a new internationalization object with the same language map as the given one but new preferences. Calling this constructor will be faster than creating a new object based on the language map, because message methods will be copied instead of being recreated.
+
+## $changePreferences(preferences: ReadonlyArray\<string>, createGenerics: boolean = true): this
+
+Change the language preferences of this internationalization object.
+
 ## $withPreferences(preferences: ReadonlyArray\<string>, createGenerics: boolean = true): Intl\<T>
 
-Create a new internationalization object with the same language map as this one but new preferences.
+Deprecated. Use `new Intl(intl, preferences, createGenerics)` instead.
 
 ## $preferences: ReadonlyArray\<string>
 
