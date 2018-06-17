@@ -2,9 +2,9 @@
 
 intl-ts est une bibliothèque d'internationalisation (i18n) pour TypeScript. Le paquet est compilé en ES2015 et peut donc également être utilisé par des applications JavaScript, mais peut potentiellement requérir une transformation par Babel pour être utilisé par les navigateurs. Ses principales caractéristiques sont :
 
-* Typage sûr : l'utilisation d'un mauvais nom de message ou du mauvais type de paramètre est détecté à la compilation. Si votre EDI le permet, vous pouvez même avoir la complétion pour les noms de message.
-* Immuable : excepté pour la représentation d'une `LanguageMap` en JavaScript (à cause d'une initialisation paresseuse), l'état des objets ne changera jamais. Un nouvel objet est créé lors de l'appel à `LanguageMap.merge` ou `Intl.$withPreferences`. Idéal pour la plupart des cadres basés sur les états, tel que React/Redux.
-* Agnostique : peut être utilisé à la fois côté serveur et côté navigateur.
+- Typage sûr : l'utilisation d'un mauvais nom de message ou du mauvais type de paramètre est détecté à la compilation. Si votre EDI le permet, vous pouvez même avoir la complétion pour les noms de message.
+- Mutable ou immuable : la bibliothèque peut être utilisée de façon immutable (idéal pour la plupart des cadres basés sur les états, tel que React/Redux) ou mutable (pour une meilleure performance).
+- Agnostique : peut être utilisé à la fois côté serveur et côté navigateur.
 
 # Installation
 
@@ -28,7 +28,7 @@ Cependant, l'anglais étant la langue de la programmation, le code, y compris le
 
 # Utilisation
 
-* Créez vos messages :
+- Créez vos messages :
 
 ```typescript
 // Version anglaise — défault
@@ -86,7 +86,7 @@ const eo: Partial<langType> = {
 
 Notez que les noms des messages _ne doivent pas contenir l'un des mots-clés_ de l'[API Intl](api.md#intlt-extends-messages).
 
-* Créez la table des langues correspondante :
+- Créez la table des langues correspondante :
 
 ```typescript
 // Création directe
@@ -104,7 +104,7 @@ const languageMap = new LanguageMap(en, 'en').merge({ fr, fr_ca }).merge({ eo })
 
 Notez que vous devriez utiliser uniquement des minuscules, chiffres et souligné comme clés dans les tables de langues, car le code de la langue est formaté ainsi par la classe `Intl`.
 
-* Créez l'objet d'internationalisation et utilisez-le !
+- Créez l'objet d'internationalisation et utilisez-le !
 
 ```typescript
 const lang = new Intl<langType>(languageMap, ['eo', 'fr-CA'])
@@ -112,7 +112,16 @@ lang.welcome() // 'Bonvenon!'
 lang.showElementCount(0) // 'Il n’y a pas d’éléments' — La compilation vérifie que 0 est bien un nombre
 ```
 
+# Mutabilité
+
+L'état des objets ne changera jamais, sauf :
+
+- la représentation d'une `LanguageMap` en JavaScript (à cause d'une initialisation paresseuse) ;
+- si vous choisissez de modifier les préférences linguistiques avec `Intl.$changePreferences`.
+
+Un nouvel objet est créé lors de l'appel à `LanguageMap.merge`, et les préférences peuvent être modifiées en clonant l'objet d'internationalisation avec `new Intl`.
+
 # Documentation
 
-* [Documentation de l'API](api.md)
-* [Exemples de code](tips.md)
+- [Documentation de l'API](api.md)
+- [Exemples de code](tips.md)

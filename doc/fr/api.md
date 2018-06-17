@@ -64,9 +64,17 @@ Notez que les codes de langue sont formatés en minuscules et chiffres séparés
 
 Notez que les noms des messages _ne doivent pas contenir l'un des mots-clés_ de l'API. Afin d'éviter les collision de noms, les méthodes et données de l'API commencent par le caractère $.
 
+## constructor(intl: Intl\<T>, preferences?: ReadonlyArray\<string>, createGenerics: boolean = true)
+
+Cloner l'objet d'internationalisation donné avec de nouvelles préférences. Autrement dit, cela va créer un nouvel objet d'internationalisation avec la même table de langues que celui fourni, mais de nouvelles préférences. L'utilisation de se constructeur sera plus rapide que de créer un nouvel objet basé sur la table de langues, car les méthodes des messages seront copiées plutôt que d'être re-créées.
+
+## $changePreferences(preferences: ReadonlyArray\<string>, createGenerics: boolean = true): this
+
+Modifier les préférences linguistique de cet objet d'internationalisation.
+
 ## $withPreferences(preferences: ReadonlyArray\<string>, createGenerics: boolean = true): Intl\<T>
 
-Créer un nouvel objet d'internationalisation avec la même table de langues que celui-ci, mais de nouvelles préférences.
+Dépréciée. Utiliser plutôt `new Intl(intl, preferences, createGenerics)`.
 
 ## $preferences: ReadonlyArray\<string>
 
