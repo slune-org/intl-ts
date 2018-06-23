@@ -3,14 +3,7 @@
 import { expect } from 'chai'
 
 import Intl, { LanguageMap, Messages } from '.'
-import {
-  allAvailables,
-  eo,
-  fr,
-  fr_ca,
-  langType,
-  languageMap,
-} from './LanguageMap.spec'
+import { allAvailables, eo, fr, fr_ca, langType, languageMap } from './LanguageMap.spec'
 
 describe('Intl', function() {
   const lang: Intl<langType> = new Intl(languageMap)
@@ -23,13 +16,7 @@ describe('Intl', function() {
     expect(lang.hello('me')).to.equal('Hello me')
   })
 
-  const RESERVED = [
-    '$preferences',
-    '$languageMap',
-    '$changePreferences',
-    '$withPreferences',
-    '$getMessageFunction',
-  ]
+  const RESERVED = ['$preferences', '$languageMap', '$changePreferences', '$withPreferences', '$getMessageFunction']
   RESERVED.forEach(key => {
     const messages: Messages = {}
     messages[key] = 'forbidden'
@@ -67,18 +54,14 @@ describe('Intl', function() {
       const newLang = new Intl(lang, ['fr_CA', 'eo', 'fr'], false)
       expect(newLang.welcome()).to.equal(eo.welcome)
       expect(newLang.$getMessageFunction('hello')).to.equal(fr_ca.hello)
-      expect(newLang.$getMessageFunction('showElementCount')).to.equal(
-        fr.showElementCount
-      )
+      expect(newLang.$getMessageFunction('showElementCount')).to.equal(fr.showElementCount)
     })
 
     it('must use preferred available message or fallback to more generic type', function() {
       const newLang = new Intl(lang, ['eo', 'fr_CA'])
       expect(newLang.welcome()).to.equal(eo.welcome)
       expect(newLang.$getMessageFunction('hello')).to.equal(eo.hello)
-      expect(newLang.$getMessageFunction('showElementCount')).to.equal(
-        fr.showElementCount
-      )
+      expect(newLang.$getMessageFunction('showElementCount')).to.equal(fr.showElementCount)
     })
 
     it('must forget non existing language in preferences', function() {
@@ -123,18 +106,14 @@ describe('Intl', function() {
       const newLang = lang.$withPreferences(['fr_CA', 'eo', 'fr'], false)
       expect(newLang.welcome()).to.equal(eo.welcome)
       expect(newLang.$getMessageFunction('hello')).to.equal(fr_ca.hello)
-      expect(newLang.$getMessageFunction('showElementCount')).to.equal(
-        fr.showElementCount
-      )
+      expect(newLang.$getMessageFunction('showElementCount')).to.equal(fr.showElementCount)
     })
 
     it('must use preferred available message or fallback to more generic type', function() {
       const newLang = lang.$withPreferences(['eo', 'fr_CA'])
       expect(newLang.welcome()).to.equal(eo.welcome)
       expect(newLang.$getMessageFunction('hello')).to.equal(eo.hello)
-      expect(newLang.$getMessageFunction('showElementCount')).to.equal(
-        fr.showElementCount
-      )
+      expect(newLang.$getMessageFunction('showElementCount')).to.equal(fr.showElementCount)
     })
 
     it('must forget non existing language in preferences', function() {
@@ -183,18 +162,14 @@ describe('Intl', function() {
       lang.$changePreferences(['fr_CA', 'eo', 'fr'], false)
       expect(lang.welcome()).to.equal(eo.welcome)
       expect(lang.$getMessageFunction('hello')).to.equal(fr_ca.hello)
-      expect(lang.$getMessageFunction('showElementCount')).to.equal(
-        fr.showElementCount
-      )
+      expect(lang.$getMessageFunction('showElementCount')).to.equal(fr.showElementCount)
     })
 
     it('must use preferred available message or fallback to more generic type', function() {
       lang.$changePreferences(['eo', 'fr_CA'])
       expect(lang.welcome()).to.equal(eo.welcome)
       expect(lang.$getMessageFunction('hello')).to.equal(eo.hello)
-      expect(lang.$getMessageFunction('showElementCount')).to.equal(
-        fr.showElementCount
-      )
+      expect(lang.$getMessageFunction('showElementCount')).to.equal(fr.showElementCount)
     })
 
     it('must forget non existing language in preferences', function() {

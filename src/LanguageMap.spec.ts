@@ -90,9 +90,7 @@ describe('LanguageMap', function() {
   })
 
   it('must be fully created, starting with default language', function() {
-    const testedLanguageMap = new LanguageMap(en, 'en')
-      .merge({ fr, fr_ca })
-      .merge({ eo })
+    const testedLanguageMap = new LanguageMap(en, 'en').merge({ fr, fr_ca }).merge({ eo })
     expect(testedLanguageMap.availables).to.have.members(allAvailables)
   })
 

@@ -28,10 +28,7 @@ export class LanguageMap<T extends Messages> {
    */
   public constructor(messages: T, defaultLang?: string)
 
-  public constructor(
-    messages: T | LanguageMapDefinition<T>,
-    defaultLang?: string
-  ) {
+  public constructor(messages: T | LanguageMapDefinition<T>, defaultLang?: string) {
     if (isFullDefinition(messages)) {
       this.definition = messages
     } else {
@@ -46,9 +43,7 @@ export class LanguageMap<T extends Messages> {
    * Merge new messages (or new languages) to the language map. This will create a new LanguageMap.
    * @param additional The additional messages.
    */
-  public merge(additional: {
-    [key: string]: Partial<Messages>
-  }): LanguageMap<T> {
+  public merge(additional: { [key: string]: Partial<Messages> }): LanguageMap<T> {
     const _definition: LanguageMapDefinition<T> = { ...this.definition }
     Object.keys(additional).forEach(lang => {
       if (!(lang in _definition)) {
@@ -109,10 +104,7 @@ export class LanguageMap<T extends Messages> {
               .map(title => [title, this.definition[lang][title]])
               .map(
                 ([title, message]) =>
-                  `"${title}": ` +
-                  (typeof message === 'string'
-                    ? `"${message}"`
-                    : message!.toString())
+                  `"${title}": ` + (typeof message === 'string' ? `"${message}"` : message!.toString())
               )
               .join(', ') +
             '}'
