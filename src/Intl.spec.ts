@@ -10,7 +10,7 @@ import {
   fr_ca,
   langType,
   languageMap,
-} from './data.spec'
+} from './LanguageMap.spec'
 
 describe('Intl', function() {
   const lang: Intl<langType> = new Intl(languageMap)
@@ -37,7 +37,7 @@ describe('Intl', function() {
     it(`must throw an exception if language map contains reserved keyword ${key}`, function() {
       expect(() => {
         new Intl(reservedMap)
-      }).to.throw()
+      }).to.throw(/not permitted/i)
     })
   })
 
