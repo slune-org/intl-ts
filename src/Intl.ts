@@ -66,7 +66,7 @@ function formatPreferences(preferences: ReadonlyArray<string>, createGenerics: b
  * @param languageMap The language map.
  * @param formattedPreferences The already formatted preferences.
  */
-function calculatePreferences(languageMap: LanguageMap<any>, formattedPreferences: string[]): string[] {
+function calculatePreferences(languageMap: LanguageMap<Messages>, formattedPreferences: string[]): string[] {
   const preferences: string[] = []
   for (const preference of formattedPreferences) {
     if (!preferences.includes(preference) && languageMap.contains(preference)) {
