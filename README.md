@@ -10,7 +10,10 @@ intl-ts is an i18n (internationlization) library for TypeScript. The package is 
 
 - Type safe: using a wrong message name or the wrong type for the parameters will be checked at compile time. If your IDE allow it, you may even have completion for message names.
 - Mutable or immutable: the library can be used in an immutable way (good for most state-aware framework, like React/Redux), or in a mutable way (for better performance).
-- Agnostic: can be used both at server or browser side.
+- MobX integration: if you are using MobX, the `$preferences` property of the `Intl` object will automatically become observable, allowing, for example, `React` components to automatically refresh when chosen language changes.
+- Agnostic: can be used both at server (NodeJS) or browser side.
+
+If you were using a previous version of the library, you may be interested by the [migration guide](doc/migrate.md)
 
 # Installation
 
@@ -41,6 +44,7 @@ Anyway, because English is the language of programming, the code, including vari
 ```typescript
 // English version — default
 const en = {
+  $: 'English',
   welcome: 'Welcome!',
   hello: (name: string) => `Hello ${name}`,
   showElementCount: (count: number) => {
@@ -63,6 +67,7 @@ type langType = typeof en
 
 // French version — full
 const fr: langType = {
+  $: 'Français',
   welcome: 'Bienvenue !',
   hello: (name: string) => `Bonjour ${name}`,
   showElementCount: (count: number) => {
@@ -81,12 +86,14 @@ const fr: langType = {
 }
 
 // Canada french version — partial
-const fr_ca: Partial<langType> = {
+const fr_ca: PartialMessages<langType> = {
+  $: 'Français (Canada)',
   hello: (name: string) => `Allo ${name}`,
 }
 
 // Esperanto version — partial
-const eo: Partial<langType> = {
+const eo: PartialMessages<langType> = {
+  $: 'Esperanto',
   welcome: 'Bonvenon!',
   hello: (name: string) => `Saluton ${name}`,
 }
@@ -100,7 +107,7 @@ Note that the message names _must not contain one of the keyword_ of the [Intl A
 // Direct creation
 const languageMap = new LanguageMap({
   default: en,
-  en,
+  en: 'default',
   fr,
   fr_ca,
   eo,
@@ -124,10 +131,10 @@ lang.showElementCount(0) // 'Il n’y a pas d’éléments' — Compilation chec
 
 Object states will never change except:
 
-- JavaScript representation of the `LanguageMap` (because of lazy initialization),
+- Internal string representation of the `LanguageMap` (because of lazy initialization),
 - if you choose to update the language preferences with `Intl.$changePreferences`.
 
-A new object is created when calling `LanguageMap.merge`, and language preferences can be updated cloning the international object with `new Intl`.
+A new object is created when calling `LanguageMap.merge()`, and language preferences can be updated cloning the international object with `new Intl`.
 
 # Documentation
 

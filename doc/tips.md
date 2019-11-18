@@ -13,6 +13,7 @@ The main file will be for the default (reference) language.
 ```typescript
 // locale/en.ts
 export const messages = {
+  $: 'English',
   welcome: 'Welcome!',
   hello: (name: string) => `Hello ${name}`,
   showElementCount: (count: number) => {
@@ -35,9 +36,10 @@ Complete language files will match the default language type to ensure no entry 
 
 ```typescript
 // locale/fr.ts
-import { messages as default } from './en'
+import { messages as defLang } from './en'
 
-export const messages: typeof default = {
+export const messages: typeof defLang = {
+  $: 'Français',
   welcome: 'Bienvenue !',
   hello: (name: string) => `Bonjour ${name}`,
   showElementCount: (count: number) => {
@@ -56,13 +58,15 @@ export const messages: typeof default = {
 }
 ```
 
-Partial language files will match a `Partial` of the default language type, this will only ensure that parameters are matching.
+Partial language files will match a `PartialMessages` of the default language type, this will only ensure that parameters are matching.
 
 ```typescript
 // locale/eo.ts
-import { messages as default } from './en'
+import { PartialMessages } from 'intl-ts'
+import { messages as defLang } from './en'
 
-export const messages: Partial<typeof default> = {
+export const messages: PartialMessages<typeof defLang> = {
+  $: 'Esperanto',
   welcome: 'Bonvenon!',
   hello: (name: string) => `Saluton ${name}`,
 }
@@ -72,8 +76,8 @@ export const messages: Partial<typeof default> = {
 
 The purpose of the index file is to merge all this and create the internationalization object. It will export:
 
-* the type of the messages (which is the type of the default language messages), because it will be needed in mutliple places,
-* a reference to the internationalization object.
+- the type of the messages (which is the type of the default language messages), because it will be needed in mutliple places,
+- a reference to the internationalization object.
 
 ```typescript
 // locale/index.ts
@@ -86,9 +90,9 @@ export type langType = typeof en
 
 const languageMap = sync(`${__dirname}/*.js`)
   .map(file => basename(file, '.js'))
-  .filter(language => language !== 'index')
-  .map(language => require(`./${language}`).messages)
-  .reduce((map, language) => map.merge(language), new LanguageMap(en))
+  .filter(language => !['index', 'en'].includes(language))
+  .map(language => ({ [language]: require(`./${language}`).messages as PartialMessages<langType> }))
+  .reduce((map, language) => map.merge(language), new LanguageMap(en, 'en'))
 
 export const lang = new Intl<langType>(languageMap, [process.env.LANG || ''])
 ```
@@ -98,9 +102,9 @@ export const lang = new Intl<langType>(languageMap, [process.env.LANG || ''])
 At server side, usage is rather straightforward.
 
 ```typescript
-import { lang } from './locale/index'
+import { lang } from './locale'
 
-const name = 'John Doe'
+const name = 'Jane Doe'
 console.info(lang.hello(name))
 ```
 
@@ -112,7 +116,7 @@ The following snippet can be used in the `express` configuration of a `React` ap
 import * as express from 'express'
 import { renderToString } from 'react-dom/server'
 import Layout from './components/Layout'
-import { lang } from './locale/index'
+import { lang } from './locale'
 
 // Calculate preferred languages order based on accept-language header
 calculatePreferredLanguages(languages?: string | string[]): string[] {
@@ -137,7 +141,7 @@ app.use((req, res) => {
   const preloaded = `window.__PRELOADED_STATE__=${JSON.stringify({
     preferredLanguages,
   }).replace(/</g, '\\u003c')}; window.__PRELOADED_STATE__.languageMap=${
-    lang.languageMap.js
+    lang.languageMap.toString()
   }`
   res.status(200).render('index', { htmlContent, preloaded })
 })
@@ -162,10 +166,7 @@ declare global {
 
 const { preferredLanguages, languageMap } = window.__PRELOADED_STATE__
 delete window.__PRELOADED_STATE__
-const lang = new Intl<langType>(
-  new LanguageMap(languageMap),
-  preferredLanguages
-)
+const lang = new Intl<langType>(new LanguageMap(languageMap), preferredLanguages)
 ```
 
 # Let user select language

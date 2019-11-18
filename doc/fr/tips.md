@@ -13,6 +13,7 @@ Le fichier principal sera pour la langue par défaut (référence).
 ```typescript
 // locale/en.ts
 export const messages = {
+  $: 'English',
   welcome: 'Welcome!',
   hello: (name: string) => `Hello ${name}`,
   showElementCount: (count: number) => {
@@ -35,9 +36,10 @@ Les fichiers de langue complets seront typés sur la langue par défaut afin de 
 
 ```typescript
 // locale/fr.ts
-import { messages as default } from './en'
+import { messages as defLang } from './en'
 
-export const messages: typeof default = {
+export const messages: typeof defLang = {
+  $: 'Français',
   welcome: 'Bienvenue !',
   hello: (name: string) => `Bonjour ${name}`,
   showElementCount: (count: number) => {
@@ -56,13 +58,15 @@ export const messages: typeof default = {
 }
 ```
 
-Les fichiers de langue partiels seront typés sur un objet `Partial` du type de langue par défaut. Cela permettra simplement de s'assurer que les paramètres correspondent.
+Les fichiers de langue partiels seront typés sur un objet `PartialMessages` du type de langue par défaut. Cela permettra simplement de s'assurer que les paramètres correspondent.
 
 ```typescript
 // locale/eo.ts
-import { messages as default } from './en'
+import { PartialMessages } from 'intl-ts'
+import { messages as defLang } from './en'
 
-export const messages: Partial<typeof default> = {
+export const messages: PartialMessages<typeof defLang> = {
+  $: 'Esperanto',
   welcome: 'Bonvenon!',
   hello: (name: string) => `Saluton ${name}`,
 }
@@ -72,8 +76,8 @@ export const messages: Partial<typeof default> = {
 
 L'objectif du fichier d'index est de fusionner tout cela et créer l'objet d'internationalisation. Il exportera :
 
-* le type des messages (c'est à dire le type des messages de la langue par défaut), car il sera utilisé à plusieurs endroits ;
-* une référence sur l'objet d'internationalisation.
+- le type des messages (c'est à dire le type des messages de la langue par défaut), car il sera utilisé à plusieurs endroits ;
+- une référence sur l'objet d'internationalisation.
 
 ```typescript
 // locale/index.ts
@@ -86,9 +90,9 @@ export type langType = typeof en
 
 const languageMap = sync(`${__dirname}/*.js`)
   .map(file => basename(file, '.js'))
-  .filter(language => language !== 'index')
-  .map(language => require(`./${language}`).messages)
-  .reduce((map, language) => map.merge(language), new LanguageMap(en))
+  .filter(language => !['index', 'en'].includes(language))
+  .map(language => ({ [language]: require(`./${language}`).messages as PartialMessages<langType> }))
+  .reduce((map, language) => map.merge(language), new LanguageMap(en, 'en'))
 
 export const lang = new Intl<langType>(languageMap, [process.env.LANG || ''])
 ```
@@ -98,9 +102,9 @@ export const lang = new Intl<langType>(languageMap, [process.env.LANG || ''])
 L'utilisation du côté serveur est relativement triviale.
 
 ```typescript
-import { lang } from './locale/index'
+import { lang } from './locale'
 
-const name = 'John Doe'
+const name = 'Jane Doe'
 console.info(lang.hello(name))
 ```
 
@@ -112,7 +116,7 @@ L'exemple suivant peut être utilisée dans la configuration `express` d'une app
 import * as express from 'express'
 import { renderToString } from 'react-dom/server'
 import Layout from './components/Layout'
-import { lang } from './locale/index'
+import { lang } from './locale'
 
 // Calculer l'ordre des langues préférées, basé sur l'en-tête accept-language
 calculatePreferredLanguages(languages?: string | string[]): string[] {
@@ -137,7 +141,7 @@ app.use((req, res) => {
   const preloaded = `window.__PRELOADED_STATE__=${JSON.stringify({
     preferredLanguages,
   }).replace(/</g, '\\u003c')}; window.__PRELOADED_STATE__.languageMap=${
-    lang.languageMap.js
+    lang.languageMap.toString()
   }`
   res.status(200).render('index', { htmlContent, preloaded })
 })
@@ -162,10 +166,7 @@ declare global {
 
 const { preferredLanguages, languageMap } = window.__PRELOADED_STATE__
 delete window.__PRELOADED_STATE__
-const lang = new Intl<langType>(
-  new LanguageMap(languageMap),
-  preferredLanguages
-)
+const lang = new Intl<langType>(new LanguageMap(languageMap), preferredLanguages)
 ```
 
 # Laisser l'utilisateur choisir sa langue

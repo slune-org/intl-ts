@@ -1,5 +1,5 @@
 import { LanguageMap } from './LanguageMap'
-import { MessageFunction, Messages } from './Messages'
+import { MessageFunction, Messages, PartialMessages } from './Messages'
 
 /**
  * The default functions and data for the Intl object.
@@ -17,19 +17,16 @@ interface IntlPrototype<T extends Messages> {
 
   /**
    * Change the preferences for this Intl object.
-   * @param preferences The new preferences.
-   * @param createGenerics If true (default), create generic languages.
+   *
+   * @param preferences - The new preferences.
+   * @param createGenerics - If true (default), create generic languages.
    */
   $changePreferences(preferences: ReadonlyArray<string>, createGenerics?: boolean): this
 
   /**
-   * Deprecated, create a new Intl object instead.
-   */
-  $withPreferences(preferences: ReadonlyArray<string>, createGenerics?: boolean): Intl<T>
-
-  /**
    * Get the message function for the given name, in the most accurate language.
-   * @param name The name of the message.
+   *
+   * @param name - The name of the message.
    */
   $getMessageFunction<K extends keyof T>(name: K): MessageFunction<T[K]>
 }
@@ -43,10 +40,12 @@ export type Intl<T extends Messages> = IntlPrototype<T> & IntlMessages<T>
 
 /**
  * Format the preferences.
- * @param preferences The preferences.
- * @param createGenerics Create the generic preferences.
+ *
+ * @param preferences - The preferences.
+ * @param createGenerics - Create the generic preferences.
+ * @returns Formatted preferences.
  */
-function formatPreferences(preferences: ReadonlyArray<string>, createGenerics: boolean = true): string[] {
+function formatPreferences(preferences: ReadonlyArray<string>, createGenerics = true): string[] {
   const formattedPreferences: string[] = []
   for (const preference of preferences) {
     const portions: string[] = preference.split(/(?:[^A-Za-z0-9])/)
@@ -63,10 +62,15 @@ function formatPreferences(preferences: ReadonlyArray<string>, createGenerics: b
 
 /**
  * Calculate real preferences based on language map and given preferences.
- * @param languageMap The language map.
- * @param formattedPreferences The already formatted preferences.
+ *
+ * @param languageMap - The language map.
+ * @param formattedPreferences - The already formatted preferences.
+ * @returns Real preferences.
  */
-function calculatePreferences(languageMap: LanguageMap<Messages>, formattedPreferences: string[]): string[] {
+function calculatePreferences(
+  languageMap: LanguageMap<Messages>,
+  formattedPreferences: string[]
+): string[] {
   const preferences: string[] = []
   for (const preference of formattedPreferences) {
     if (!preferences.includes(preference) && languageMap.contains(preference)) {
@@ -76,13 +80,44 @@ function calculatePreferences(languageMap: LanguageMap<Messages>, formattedPrefe
   return preferences
 }
 
+/*
+ * Try to load the `mobx` library. If succeeded, will give the ability to create observable properties.
+ */
+let mobx: typeof import('mobx') | undefined
+try {
+  if (process && process.env && process.env.INTL_MOBX === 'no') {
+    throw new Error()
+  }
+  // eslint-disable-next-line import/no-extraneous-dependencies
+  mobx = require('mobx')
+} catch {
+  // Silent ignore
+}
+const defineObservableProperty: (o: any, p: string, value: any) => void =
+  !!mobx && !!mobx.extendObservable && !!mobx.observable && !!mobx.observable.ref
+    ? (o: any, p: string, value: any) => {
+        mobx!.extendObservable(o, { [p]: value }, { [p]: mobx!.observable.ref })
+        const d = Object.getOwnPropertyDescriptor(o, p)
+        d!.enumerable = false
+        Object.defineProperty(o, p, d!)
+      }
+    : (o: any, p: string, value: any) => {
+        Object.defineProperty(o, p, {
+          configurable: false,
+          enumerable: false,
+          value,
+          writable: true,
+        })
+      }
+
 /**
  * Create a new Intl.
- * @param mapOrSource The Language map to use to get the messages, or the source Intl object to clone.
- * @param preferences The preferred languages, ordered.
- * @param createGenerics If true (default), create generic languages for preferences (e.g. will add 'en' for 'en-US').
+ *
+ * @param this - The Intl object.
+ * @param mapOrSource - The Language map to use to get the messages, or the source Intl object to clone.
+ * @param preferences - The preferred languages, ordered.
+ * @param createGenerics - If true (default), create generic languages for preferences (e.g. Will add 'en' for 'en-US').
  */
-// tslint:disable-next-line:variable-name (building a special object)
 export const Intl: {
   prototype: Intl<Messages>
   new <T extends Messages>(
@@ -103,20 +138,21 @@ export const Intl: {
     value: mapOrSource instanceof Intl ? mapOrSource.$languageMap : mapOrSource,
     writable: false,
   })
-  Object.defineProperty(this, '$preferences', {
-    configurable: true, // Needed to make it observable
-    enumerable: false,
-    value: preferences ? calculatePreferences(this.$languageMap, formatPreferences(preferences, createGenerics)) : [],
-    writable: true,
-  })
+  defineObservableProperty(
+    this,
+    '$preferences',
+    preferences
+      ? calculatePreferences(this.$languageMap, formatPreferences(preferences, createGenerics))
+      : []
+  )
 
   // Create (or clone) special functions
   if (mapOrSource instanceof Intl) {
     Object.assign(this, mapOrSource)
   } else {
-    for (const key in this.$languageMap.default) {
+    for (const key in this.$languageMap.messages()) {
       if (key in this) {
-        throw new Error(`Entry ${key} is not permitted in language map`)
+        throw new Error(`Intl: entry "${key}" is not permitted in language map`)
       }
       Object.defineProperty(this, key, {
         configurable: false,
@@ -135,39 +171,30 @@ Intl.prototype.$changePreferences = function<T extends Messages>(
   preferences: ReadonlyArray<string>,
   createGenerics?: boolean
 ): Intl<T> {
-  // tslint:disable-next-line:no-this-assignment
-  const thisAny: any = this
-  thisAny.$preferences = calculatePreferences(this.$languageMap, formatPreferences(preferences, createGenerics))
+  ;(this as any).$preferences = calculatePreferences(
+    this.$languageMap,
+    formatPreferences(preferences, createGenerics)
+  )
   return this
-}
-
-Intl.prototype.$withPreferences = function<T extends Messages>(
-  this: Intl<T>,
-  preferences: ReadonlyArray<string>,
-  createGenerics?: boolean
-): Intl<T> {
-  // tslint:disable-next-line:no-console (temporary deprecation message)
-  console.log('Warning: Intl.$withPreferences is deprecated — Create a new Intl instead')
-  return new Intl(this, preferences, createGenerics)
 }
 
 Intl.prototype.$getMessageFunction = function<T extends Messages, K extends keyof T>(
   this: Intl<T>,
   name: K
 ): MessageFunction<T[K]> {
-  let message: T[K] | null = null
+  let message: T[K] | undefined
   for (const preference of this.$preferences) {
-    const language: Partial<T> = this.$languageMap.messages(preference)
+    const language: Readonly<PartialMessages<T>> = this.$languageMap.messages(preference)
     if (name in language) {
       message = language[name] as T[K]
       break
     }
   }
   if (!message) {
-    message = this.$languageMap.default[name]
+    message = this.$languageMap.messages()[name]
   }
   if (typeof message === 'string') {
-    return (() => message) as MessageFunction<T[K]>
+    return (() => message) as any
   } else {
     return message as MessageFunction<T[K]>
   }
