@@ -7,3 +7,8 @@ coverage/
 
 # VS code
 .vscode/
+
+# Examples
+examples/content/package-lock.json
+examples/mobx-full
+examples/redux-lite

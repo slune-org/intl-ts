@@ -22,7 +22,11 @@
     "test:unit": "nyc mocha --require ts-node/register 'src/**/*.spec.ts'",
     "clean": "rimraf dist",
     "build": "npm run build:tsc",
-    "build:tsc": "tsc"
+    "build:tsc": "tsc",
+    "example": "npm run example:mobx-full && npm run example:redux-lite",
+    "example:mobx-full": "NAME=mobx-full npm run :example:name",
+    "example:redux-lite": "NAME=redux-lite npm run :example:name",
+    ":example:name": "rimraf examples/${NAME} && cp -r examples/content examples/${NAME} && patch -d examples/${NAME} -p1 -i ../${NAME}.diff"
   },
   "nyc": {
     "extension": [
