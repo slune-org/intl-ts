@@ -4,6 +4,7 @@
     "lib": ["dom", "es2015", "es2020"],
     "module": "CommonJS",
     "moduleResolution": "node",
+    "jsx": "react",
     "rootDir": "src",
     "outDir": "dist",
     "declaration": true,
@@ -15,5 +16,5 @@
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true
   },
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
 }

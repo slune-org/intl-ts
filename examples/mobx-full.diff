@@ -1,0 +1,101 @@
+diff -Naur content/package.json mobx-full/package.json
+--- content/package.json	2019-11-18 21:15:14.264772750 +0100
++++ mobx-full/package.json	2019-11-18 21:15:31.238485985 +0100
+@@ -13,6 +13,8 @@
+     "express": "^4.17.1",
+     "glob": "^7.1.6",
+     "intl-ts": "file:../..",
++    "mobx": "^5.15.0",
++    "mobx-react-lite": "^1.5.1",
+     "react": "^16.12.0",
+     "react-dom": "^16.12.0"
+   },
+diff -Naur content/src/client/Clock.tsx mobx-full/src/client/Clock.tsx
+--- content/src/client/Clock.tsx	2019-11-19 10:15:41.263561100 +0100
++++ mobx-full/src/client/Clock.tsx	2019-11-19 10:30:00.543473415 +0100
+@@ -1,3 +1,4 @@
++import { useObserver } from 'mobx-react-lite'
+ // eslint-disable-next-line import/no-duplicates
+ import * as React from 'react'
+ // eslint-disable-next-line import/no-duplicates
+@@ -13,6 +14,6 @@
+     }, 1000)
+     return () => clearInterval(timer)
+   }, [])
+-  return <p>{lang.displayTime(lang.convertDate(date), lang.convertTime(date))}</p>
++  return useObserver(() => <p>{lang.displayTime(lang.convertDate(date), lang.convertTime(date))}</p>)
+ }
+ export default Clock
+diff -Naur content/src/client/Language.tsx mobx-full/src/client/Language.tsx
+--- content/src/client/Language.tsx	2019-11-18 21:19:48.983135633 +0100
++++ mobx-full/src/client/Language.tsx	2019-11-18 21:28:02.012834634 +0100
+@@ -1,3 +1,4 @@
++import { useObserver } from 'mobx-react-lite'
+ // eslint-disable-next-line import/no-duplicates
+ import * as React from 'react'
+ // eslint-disable-next-line import/no-duplicates
+@@ -10,10 +11,10 @@
+   const selected = lang.$preferences.length > 0 ? lang.$preferences[0] : lang.$languageMap.default
+ 
+   const onChange = useCallback((event: ChangeEvent<HTMLSelectElement>) => {
+-    console.log(event.target.value)
++    lang.$changePreferences([event.target.value])
+   }, [])
+ 
+-  return (
++  return useObserver(() => (
+     <>
+       <label htmlFor="lang-select">{lang.selectLanguage()}</label>&nbsp;
+       <select id="lang-select" value={selected} onChange={onChange}>
+@@ -24,6 +25,6 @@
+         ))}
+       </select>
+     </>
+-  )
++  ))
+ }
+ export default Language
+diff -Naur content/src/client/Name.tsx mobx-full/src/client/Name.tsx
+--- content/src/client/Name.tsx	2019-11-18 21:19:35.627360867 +0100
++++ mobx-full/src/client/Name.tsx	2019-11-18 21:29:07.279737656 +0100
+@@ -1,3 +1,4 @@
++import { useObserver } from 'mobx-react-lite'
+ // eslint-disable-next-line import/no-duplicates
+ import * as React from 'react'
+ // eslint-disable-next-line import/no-duplicates
+@@ -12,9 +13,9 @@
+     setUserName(event.target.value)
+   }, [])
+ 
+-  const greetings = userName ? <p>{lang.hello(userName)}</p> : undefined
++  const greetings = useObserver(() => (userName ? <p>{lang.hello(userName)}</p> : undefined))
+ 
+-  return (
++  return useObserver(() => (
+     <>
+       <hr />
+       <label htmlFor="username">{lang.enterName()}</label>&nbsp;
+@@ -23,6 +24,6 @@
+       {greetings}
+       <p>{lang.showNameSize(userName.length)}</p>
+     </>
+-  )
++  ))
+ }
+ export default Name
+diff -Naur content/src/client/Welcome.tsx mobx-full/src/client/Welcome.tsx
+--- content/src/client/Welcome.tsx	2019-11-18 21:19:19.357635271 +0100
++++ mobx-full/src/client/Welcome.tsx	2019-11-18 21:29:53.679957377 +0100
+@@ -1,3 +1,4 @@
++import { useObserver } from 'mobx-react-lite'
+ // eslint-disable-next-line import/no-duplicates
+ import * as React from 'react'
+ // eslint-disable-next-line import/no-duplicates
+@@ -6,6 +7,6 @@
+ 
+ const Welcome: FunctionComponent = () => {
+   const lang = useLang()
+-  return <h1>{lang.welcome()}</h1>
++  return useObserver(() => <h1>{lang.welcome()}</h1>)
+ }
+ export default Welcome

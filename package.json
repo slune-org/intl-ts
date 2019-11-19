@@ -1,20 +1,32 @@
 {
   "name": "intl-ts",
-  "version": "3.2.0",
+  "version": "4.0.0",
   "description": "Internationalization library for TypeScript",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "files": [
+    "dist/**",
+    "!dist/**/*.spec.*",
+    "!dist/**/*.map",
+    "doc/**"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sveyret/intl-ts.git"
   },
   "scripts": {
-    "prepublishOnly": "npm run build && npm run test",
-    "build": "npm run clean && npm run tsc",
-    "test": "nyc mocha --require ts-node/register --require source-map-support/register 'src/**/*.spec.ts'",
-    "tsc": "tsc",
-    "lint": "tslint src/**/*.ts",
-    "clean": "rimraf dist"
+    "prepublishOnly": "npm run test && npm run clean && npm run build",
+    "test": "npm run test:lint && npm run test:depcheck && npm run test:unit",
+    "test:lint": "eslint src/**/*.ts",
+    "test:depcheck": "depcheck --ignores='@types/mocha,@types/node'",
+    "test:unit": "nyc mocha --require ts-node/register 'src/**/*.spec.ts'",
+    "clean": "rimraf dist",
+    "build": "npm run build:tsc",
+    "build:tsc": "tsc",
+    "example": "npm run example:mobx-full && npm run example:redux-lite",
+    "example:mobx-full": "NAME=mobx-full npm run :example:name",
+    "example:redux-lite": "NAME=redux-lite npm run :example:name",
+    ":example:name": "rimraf examples/${NAME} && cp -r examples/content examples/${NAME} && patch -d examples/${NAME} -p1 -i ../${NAME}.diff"
   },
   "nyc": {
     "extension": [
@@ -50,14 +62,24 @@
   },
   "homepage": "https://github.com/sveyret/intl-ts",
   "devDependencies": {
-    "@types/chai": "4.1.5",
-    "@types/mocha": "5.2.5",
-    "chai": "4.1.2",
-    "mocha": "5.2.0",
-    "nyc": "13.0.1",
-    "rimraf": "2.6.2",
-    "ts-node": "7.0.1",
-    "tslint": "5.11.0",
-    "typescript": "3.0.3"
+    "@types/chai": "4.2.5",
+    "@types/mocha": "5.2.7",
+    "@types/node": "^12.12.9",
+    "@typescript-eslint/eslint-plugin": "2.7.0",
+    "@typescript-eslint/parser": "2.7.0",
+    "chai": "4.2.0",
+    "depcheck": "0.9.1",
+    "eslint": "6.6.0",
+    "eslint-config-prettier": "6.5.0",
+    "eslint-plugin-import": "2.18.2",
+    "eslint-plugin-jsdoc": "18.0.1",
+    "eslint-plugin-prettier": "3.1.1",
+    "mobx": "5.15.0",
+    "mocha": "6.2.2",
+    "nyc": "14.1.1",
+    "prettier": "1.19.1",
+    "rimraf": "3.0.0",
+    "ts-node": "8.5.0",
+    "typescript": "3.7.2"
   }
 }
