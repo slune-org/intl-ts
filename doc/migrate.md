@@ -41,11 +41,11 @@ Example :
 
 ## Messages are now read-only
 
-The `messages(lang: string): Readonly<PartialMessages<T>>` (or `messages(): Readonly<T>`) method is returing messages in a given or the default language. Returned messages are directly those in memory, which could allow them to be modified. This is not expected by the library, and to prevent this, the return type of this method is now tagged as `Readonly`.
+The `messages(lang: string): Readonly<PartialMessages<T>>` (or `messages(): Readonly<T>`) method is returning messages in a given or the default language. Returned messages are directly those in memory, which could allow them to be modified. This is not expected by the library, and to prevent this, the return type of this method is now tagged as `Readonly`.
 
 ## Language name is mandatory
 
-Messages given to the constructor must, for each of them, have an entry `$` containing the name of the language, usualy in the language itself.
+Messages given to the constructor must, for each of them, have an entry `$` containing the name of the language, usually in the language itself.
 
 The same is for the `merge<A extends Messages>(additional: { [key: string]: Partial<A> }): LanguageMap<T & A>` method which will raise an exception if the `additional` parameter contains a language which is not already in the original object and does not contain the `$` entry.
 
@@ -54,7 +54,7 @@ Example :
 ```diff
  const en = {
 +  $: 'English',
-   welcome: 'Welcome!',
+   welcome: 'Welcome here!',
 ```
 
 ## Default language is not managed the same way anymore

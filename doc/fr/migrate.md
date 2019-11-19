@@ -1,12 +1,12 @@
 # Migrer depuis une v3 ou antérieure vers une v4
 
-Si vous utilisiez une version antérieure de la bibliothèque, voici ici les quelqes modifications à faire pour passer à la version 4.
+Si vous utilisiez une version antérieure de la bibliothèque, voici ici les quelques modifications à faire pour passer à la version 4.
 
 # Intl
 
 ## La méthode \$withPreferences a été supprimée
 
-La méthode `$withPreferences(preferences: ReadonlyArray<string>, createGenerics: boolean = true): Intl<T>`, déja dépréciée depuis la version 3, a été supprimée. Il faut maintenant créer un nouvel objet avec le constructeur `new Intl<T>(intl: Intl<T>, preferences: ReadonlyArray<string>, createGenerics: boolean)`.
+La méthode `$withPreferences(preferences: ReadonlyArray<string>, createGenerics: boolean = true): Intl<T>`, déjà dépréciée depuis la version 3, a été supprimée. Il faut maintenant créer un nouvel objet avec le constructeur `new Intl<T>(intl: Intl<T>, preferences: ReadonlyArray<string>, createGenerics: boolean)`.
 
 Exemple :
 
@@ -54,7 +54,7 @@ Exemple :
 ```diff
  const en = {
 +  $: 'English',
-   welcome: 'Welcome!',
+   welcome: 'Welcome here!',
 ```
 
 ## La langue par défaut n'est plus gérée de la même façon

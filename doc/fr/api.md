@@ -1,6 +1,6 @@
 # Messages
 
-Cette interface décrit comment écrire les objets contenant les messages pour une langue donnée. Ce type peut être utilisé si des messages sont récupérés depuis une application étrangère (cas d'une extention, par exemple). Dans la plupart des cas le `typeof` langue par défaut sera suffisant.
+Cette interface décrit comment écrire les objets contenant les messages pour une langue donnée. Ce type peut être utilisé si des messages sont récupérés depuis une application étrangère (cas d'une extension, par exemple). Dans la plupart des cas le `typeof` langue par défaut sera suffisant.
 
 Il est conseillé de ne pas utiliser de clé commençant par `$` dans les messages, afin d'éviter les conflits avec les mots-clés réservés de `Intl` ; mais il est nécessaire que, pour chaque langue, une entrée `$` soit fournie, avec le nom de la langue. En général, le nom de la langue est spécifiée dans la langue elle-même.
 
@@ -12,7 +12,7 @@ Ce type peut être utilisé pour indiquer une traduction partielle. Il est simil
 
 # LanguageMapDefinition\<T extends Messages>
 
-Cette interface décrit les données d'une table de langues complète. Elle peut être utilisée pour récupérer une table de langues sérialisée, par exemple, lorsqu'une table de langues est transmise par un serveur à un navigateur (cf. [astuces](./tips.md)).
+Cette interface décrit les données d'une table de langues complète. Elle peut être utilisée pour récupérer une table de langues sérialisée, par exemple, lorsqu'une table de langues est transmise par un serveur à un navigateur (cf. [exemples](./examples.md)).
 
 Le paramètre générique `T` représente le type de la langue par défaut.
 
@@ -36,11 +36,11 @@ Créer une table de langues basée sur les messages par défaut. Si le paramètr
 
 ## merge\<A extends Messages>(additional: { [key: string]: Partial\<A> }): LanguageMap\<T & A>
 
-Créer une nouvelle table de langues contenant les messages fournis, fusionnés avec la définition actuelle. Le paramètre `additional` fourni des messages qui peuvent potentiellement remplacer des messages existants, créer de nouvelles langues ou même étendre la liste des messages (cas des messages spécifiques pour une extention, par exemple).
+Créer une nouvelle table de langues contenant les messages fournis, fusionnés avec la définition actuelle. Le paramètre `additional` fourni des messages qui peuvent potentiellement remplacer des messages existants, créer de nouvelles langues ou même étendre la liste des messages (cas des messages spécifiques pour une extension, par exemple).
 
 ## contains(lang: string): boolean
 
-Indiquer si la table de langues contient la langue donnée. Cette méthode ne peut pas être utilisée pour tester l'existance de la langue `default`, mais cette langue (par défaut) est toujours présente.
+Indiquer si la table de langues contient la langue donnée. Cette méthode ne peut pas être utilisée pour tester l'existence de la langue `default`, mais cette langue (par défaut) est toujours présente.
 
 ## availables: string[]
 
@@ -90,7 +90,7 @@ Modifier les préférences linguistique de cet objet d'internationalisation. C'e
 
 Les préférences réellement utilisées par l'objet. Seules les langues trouvées dans la table de langues sont conservées. Ce paramètre est en lecture seulement.
 
-Si la bibliothèque MobX peut être chargée, cette propriétée sera automatiquement observable. Comme elle est lue à chaque fois qu'un message est affiché, cela veut dire que tous les observateurs qui affichent des chaines de caractères seront automatiquement rafraichis lorsque les préférences seront modifiées.
+Si la bibliothèque MobX peut être chargée, cette propriété sera automatiquement observable. Comme elle est lue à chaque fois qu'un message est affiché, cela veut dire que tous les observateurs qui affichent des chaines de caractères seront automatiquement rafraichis lorsque les préférences seront modifiées.
 
 ## \$languageMap: LanguageMap\<T>
 

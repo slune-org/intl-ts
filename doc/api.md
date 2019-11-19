@@ -12,7 +12,7 @@ This type may be used to indicate a partial translation. It is similar to `Parti
 
 # LanguageMapDefinition\<T extends Messages>
 
-This interface describes the data of a full language map. It may be used to retrieve a serialized language map, for exemple when a language map is transmitted from server to browser (see [tips](./tips.md)).
+This interface describes the data of a full language map. It may be used to retrieve a serialized language map, for exemple when a language map is transmitted from server to browser (see [examples](./examples.md)).
 
 The generic parameter `T` represents the type of the default language.
 
@@ -40,7 +40,7 @@ Create a new language map containing given messages merged to current definition
 
 ## contains(lang: string): boolean
 
-Indicate if the language map contains the given language. This cannot be used to test existance of `default` language, but default language is always present.
+Indicate if the language map contains the given language. This cannot be used to test existence of `default` language, but default language is always present.
 
 ## availables: string[]
 
@@ -74,7 +74,7 @@ The generic parameter `T` represents the type of the default language.
 
 Create an internationalization object using the given language map. If `preferences` parameter is provided, its value will be used as the user preferred language order. If true, the parameter `createGenerics` allow more generic language codes to be automatically added in preferences. For example, if preference contains `no-NO-NY`, it will automatically add `no-NO` and `no` in this order after this entry. This parameter may be set to false, for example when using browser preferred languages, as end-user may already define specific and generic preferences.
 
-Note that language codes are formatted to lowercase and digit separated with underscores. So, instead of `no-NO-NY`, the actual language code will be `no_no_ny`. This will ensure a single way of writting language codes, using characters which are valid as object keys in TypeScript (preventing the need to use quotes).
+Note that language codes are formatted to lowercase and digit separated with underscores. So, instead of `no-NO-NY`, the actual language code will be `no_no_ny`. This will ensure a single way of writing language codes, using characters which are valid as object keys in TypeScript (preventing the need to use quotes).
 
 Note that the message names _must not contain one of the keyword_ of the API. In order to prevent name collision, API methods and data begin with a \$ character.
 

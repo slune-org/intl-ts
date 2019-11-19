@@ -4,9 +4,9 @@
 [![coverage](https://coveralls.io/repos/github/sveyret/intl-ts/badge.svg?branch=master)](https://coveralls.io/github/sveyret/intl-ts)
 [![issues](https://img.shields.io/github/issues/sveyret/intl-ts.svg)](https://github.com/sveyret/intl-ts/issues)
 
-# intl-ts - Typesafe internationalization library
+# intl-ts - Type safe internationalization library
 
-intl-ts is an i18n (internationlization) library for TypeScript. The package is compiled in ES2015 and so can also be used by JavaScript applications, but may require a Babel translation to be used with browsers. Its main features are:
+intl-ts is an i18n (internationalization) library for TypeScript. The package is compiled in ES2015 and so can also be used by JavaScript applications, but may require a Babel translation to be used with browsers. Its main features are:
 
 - Type safe: using a wrong message name or the wrong type for the parameters will be checked at compile time. If your IDE allow it, you may even have completion for message names.
 - Mutable or immutable: the library can be used in an immutable way (good for most state-aware framework, like React/Redux), or in a mutable way (for better performance).
@@ -45,7 +45,7 @@ Anyway, because English is the language of programming, the code, including vari
 // English version — default
 const en = {
   $: 'English',
-  welcome: 'Welcome!',
+  welcome: 'Welcome here!',
   hello: (name: string) => `Hello ${name}`,
   showElementCount: (count: number) => {
     switch (count) {
@@ -68,7 +68,7 @@ type langType = typeof en
 // French version — full
 const fr: langType = {
   $: 'Français',
-  welcome: 'Bienvenue !',
+  welcome: 'Bienvenue ici !',
   hello: (name: string) => `Bonjour ${name}`,
   showElementCount: (count: number) => {
     switch (count) {
@@ -88,13 +88,13 @@ const fr: langType = {
 // Canada french version — partial
 const fr_ca: PartialMessages<langType> = {
   $: 'Français (Canada)',
-  hello: (name: string) => `Allo ${name}`,
+  welcome: 'Bienvenue icitte !',
 }
 
 // Esperanto version — partial
 const eo: PartialMessages<langType> = {
   $: 'Esperanto',
-  welcome: 'Bonvenon!',
+  welcome: 'Bonvenon ĉi-tie!',
   hello: (name: string) => `Saluton ${name}`,
 }
 ```
@@ -117,13 +117,13 @@ const languageMap = new LanguageMap({
 const languageMap = new LanguageMap(en, 'en').merge({ fr, fr_ca }).merge({ eo })
 ```
 
-Note that you should only use lowercases, digits and underscores as keys in language maps, because language codes will be formatted this way by the `Intl` class.
+Note that you should only use lowercase letters, digits and underscores as keys in language maps, because language codes will be formatted this way by the `Intl` class.
 
 - Create the internationalization object, and use it!
 
 ```typescript
 const lang = new Intl<langType>(languageMap, ['eo', 'fr-CA'])
-lang.welcome() // 'Bonvenon!'
+lang.welcome() // 'Bonvenon ĉi-tie!'
 lang.showElementCount(0) // 'Il n’y a pas d’éléments' — Compilation check that 0 is of type number
 ```
 
@@ -132,11 +132,11 @@ lang.showElementCount(0) // 'Il n’y a pas d’éléments' — Compilation chec
 Object states will never change except:
 
 - Internal string representation of the `LanguageMap` (because of lazy initialization),
-- if you choose to update the language preferences with `Intl.$changePreferences`.
+- if you choose to update the language preferences with `Intl.$changePreferences`, but you can choose to update them by cloning initial object using the copy constructor.
 
-A new object is created when calling `LanguageMap.merge()`, and language preferences can be updated cloning the international object with `new Intl`.
+A new object is created when calling `LanguageMap.merge()`.
 
 # Documentation
 
 - [API documentation](doc/api.md)
-- [Code snippets](doc/tips.md)
+- [Code examples](doc/examples.md)
