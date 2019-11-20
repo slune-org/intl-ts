@@ -1,12 +1,11 @@
-import { Messages, PartialMessages } from './Messages'
+import { Messages, PartialMessages } from './MessageTypes'
 
 /**
  * Definition of a language map (the object containing messages for each languages).
  */
-export interface LanguageMapDefinition<T extends Messages> {
+export type LanguageMapDefinition<T extends Messages> = {
   default: T
-  [lang: string]: PartialMessages<T> | 'default'
-}
+} & Omit<{ [lang: string]: PartialMessages<T> | 'default' }, 'default'>
 
 /**
  * The language map contains a list of messages for each supported language. A LanguageMap is immutable.

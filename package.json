@@ -1,6 +1,6 @@
 {
   "name": "intl-ts",
-  "version": "4.0.1",
+  "version": "4.0.2",
   "description": "Internationalization library for TypeScript",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
@@ -47,6 +47,8 @@
   "keywords": [
     "internationalization",
     "internationalisation",
+    "localization",
+    "localisation",
     "intl",
     "i18n",
     "library",
