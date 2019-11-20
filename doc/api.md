@@ -38,6 +38,10 @@ Create a language map base on the default messages. If the `defaultLang` paramet
 
 Create a new language map containing given messages merged to current definition. The `additional` parameter provides messages which may replace existing strings, create new languages or even extend the string list (e.g. plugin specific messages).
 
+The method will raise an exception if the `additional` parameter contains a language which is not already in the original object and does not contain the `$` entry.
+
+If a message is given in any language while it does not exist in default language, the entry will be duplicated in the default language.
+
 ## contains(lang: string): boolean
 
 Indicate if the language map contains the given language. This cannot be used to test existence of `default` language, but default language is always present.

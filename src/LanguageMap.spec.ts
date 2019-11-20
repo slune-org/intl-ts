@@ -104,10 +104,12 @@ describe('LanguageMap', function() {
     )
   })
 
-  it('must fail when adding a message with no default', function() {
-    expect(() =>
-      new LanguageMap({ default: en, en: 'default', fr }).merge({ fr: { unknown: 'broken' } })
-    ).to.throw('LanguageMap: merged message "unknown" has no default')
+  it('must duplicate added message with no default', function() {
+    const testedLanguageMap = new LanguageMap({ default: en, en: 'default', fr }).merge<{
+      $: string
+      unknown: string
+    }>({ fr: { unknown: 'cassé' } })
+    expect(testedLanguageMap.messages().unknown).to.equal('cassé')
   })
 
   it('must succeed when adding a message with provided (unknown) default', function() {

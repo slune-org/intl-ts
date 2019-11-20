@@ -71,4 +71,4 @@ Example :
    fr,
 ```
 
-The default language must contain all the messages available in other languages. An exception will be raised by the `merge<A extends Messages>(additional: { [key: string]: Partial<A> }): LanguageMap<T & A>` method if you try to add an entry in another language while it does not exist in the default one.
+The default language must contain all the messages available in other languages. If you add an entry in another language while it does not exist in the default one, this entry will be duplicated in the default language.
