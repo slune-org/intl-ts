@@ -38,6 +38,10 @@ Créer une table de langues basée sur les messages par défaut. Si le paramètr
 
 Créer une nouvelle table de langues contenant les messages fournis, fusionnés avec la définition actuelle. Le paramètre `additional` fourni des messages qui peuvent potentiellement remplacer des messages existants, créer de nouvelles langues ou même étendre la liste des messages (cas des messages spécifiques pour une extension, par exemple).
 
+La méthode lèvera une exception si le paramètre `additional` contient une langue qui n'existe pas dans l'objet d'origine et ne contient pas l'entrée `$`.
+
+Si un message est donnée dans une langue quelconque alors qu'il n'existe pas dans la langue par défaut, l'entrée sera dupliquée dans la langue par défaut.
+
 ## contains(lang: string): boolean
 
 Indiquer si la table de langues contient la langue donnée. Cette méthode ne peut pas être utilisée pour tester l'existence de la langue `default`, mais cette langue (par défaut) est toujours présente.

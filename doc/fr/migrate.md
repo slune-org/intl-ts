@@ -71,4 +71,4 @@ Exemple :
    fr,
 ```
 
-La langue par défaut doit obligatoirement contenir tous les messages disponibles dans les autres langues. Une exception sera levée par la méthode `merge<A extends Messages>(additional: { [key: string]: Partial<A> }): LanguageMap<T & A>` si vous tentez d'ajouter une entrée dans une autre langue alors qu'elle n'existe pas dans la langue par défaut.
+La langue par défaut doit obligatoirement contenir tous les messages disponibles dans les autres langues. Si vous ajoutez une entrée dans une autre langue alors qu'elle n'existe pas dans la langue par défaut, celle-ci sera dupliquée dans la langue par défaut.

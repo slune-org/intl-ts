@@ -90,7 +90,7 @@ export class LanguageMap<T extends Messages> {
         }
         Object.keys(messages).forEach(message => {
           if (lang !== 'default' && !(message in _definition.default)) {
-            throw new Error(`LanguageMap: merged message "${message}" has no default`)
+            ;(_definition.default as any)[message] = messages[message]
           }
           ;(_definition[lang] as any)[message] = messages[message]
         })

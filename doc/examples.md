@@ -147,7 +147,7 @@ export const messages: PartialMessages<typeof defLang> = {
 }
 ```
 
-Note that, by default, when the `Français (Canada)` will be selected, the `fr_ca` preference will be given to the `Intl` object which will automatically add the `fr` preference as second choice, which will correctly fill the translations (this is the result of the `createGenerics` option in the constructor and in the `$changePreferences()` method). En dernier choix, si la traduction n'est toujours pas trouvée, c'est la langue par défaut qui est utilisée.
+Note that, by default, when the `Français (Canada)` will be selected, the `fr_ca` preference will be given to the `Intl` object which will automatically add the `fr` preference as second choice, which will correctly fill the translations (this is the result of the `createGenerics` option in the constructor and in the `$changePreferences()` method). As a last choice, if translation is still not found, the default language is used.
 
 ## Index file
 
