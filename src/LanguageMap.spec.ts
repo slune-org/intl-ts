@@ -2,7 +2,7 @@
 import { expect } from 'chai'
 
 import { LanguageMap } from '.'
-import { PartialMessages } from './Messages'
+import { PartialMessages } from './MessageTypes'
 
 // English version — default
 export const en = {

@@ -1,5 +1,5 @@
 import { LanguageMap } from './LanguageMap'
-import { MessageFunction, Messages, PartialMessages } from './Messages'
+import { MessageFunction, Messages, PartialMessages } from './MessageTypes'
 
 /**
  * The default functions and data for the Intl object.
@@ -81,7 +81,7 @@ function calculatePreferences(
 }
 
 /*
- * Try to load the `mobx` library. If succeeded, will give the ability to create observable properties.
+ * Try to load the `mobx` library. If succeed, will give the ability to create observable properties.
  */
 let mobx: typeof import('mobx') | undefined
 try {
@@ -186,7 +186,7 @@ Intl.prototype.$getMessageFunction = function<T extends Messages, K extends keyo
   for (const preference of this.$preferences) {
     const language: Readonly<PartialMessages<T>> = this.$languageMap.messages(preference)
     if (name in language) {
-      message = language[name] as T[K]
+      message = (language as T)[name]
       break
     }
   }
