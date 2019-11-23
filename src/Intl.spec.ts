@@ -1,10 +1,12 @@
 /* eslint-disable prefer-arrow-callback */
 import { expect } from 'chai'
-import { autorun, observable } from 'mobx'
+import { autorun, configure as mobxConfigure, observable, runInAction } from 'mobx'
 
 import Intl, { LanguageMap, Messages } from '.'
 // eslint-disable-next-line @typescript-eslint/camelcase
 import { allAvailables, en, eo, fr, fr_ca, langType, languageMap } from './LanguageMap.spec'
+
+mobxConfigure({ enforceActions: 'observed' })
 
 describe('Intl', function() {
   const lang: Intl<langType> = new Intl(languageMap)
@@ -147,7 +149,7 @@ describe('Intl', function() {
         }
         const store = new Store()
         const result = await testObservation(store, 'Jon', () => {
-          store.lang = new Intl(languageMap, ['fr'])
+          runInAction(() => (store.lang = new Intl(languageMap, ['fr'])))
         })
         expect(result).to.have.ordered.members(['Hello Jon', 'Bonjour Jon'])
       })

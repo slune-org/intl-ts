@@ -81,7 +81,7 @@ function calculatePreferences(
 }
 
 /*
- * Try to load the `mobx` library. If succeed, will give the ability to create observable properties.
+ * Try to load the `mobx` library. If succeed, will give the ability to create observable and actions.
  */
 let mobx: typeof import('mobx') | undefined
 try {
@@ -93,6 +93,8 @@ try {
 } catch {
   // Silent ignore
 }
+
+// Define a property which may be observable if `mobx` is available.
 const defineObservableProperty: (o: any, p: string, value: any) => void =
   !!mobx && !!mobx.extendObservable && !!mobx.observable && !!mobx.observable.ref
     ? (o: any, p: string, value: any) => {
@@ -116,7 +118,8 @@ const defineObservableProperty: (o: any, p: string, value: any) => void =
  * @param this - The Intl object.
  * @param mapOrSource - The Language map to use to get the messages, or the source Intl object to clone.
  * @param preferences - The preferred languages, ordered.
- * @param createGenerics - If true (default), create generic languages for preferences (e.g. Will add 'en' for 'en-US').
+ * @param createGenerics - If true (default), create generic languages for preferences (e.g. Will add 'en'
+ * for 'en-US').
  */
 export const Intl: {
   prototype: Intl<Messages>
@@ -176,6 +179,9 @@ Intl.prototype.$changePreferences = function<T extends Messages>(
     formatPreferences(preferences, createGenerics)
   )
   return this
+}
+if (!!mobx && !!mobx.action) {
+  Intl.prototype.$changePreferences = mobx!.action(Intl.prototype.$changePreferences)
 }
 
 Intl.prototype.$getMessageFunction = function<T extends Messages, K extends keyof T>(

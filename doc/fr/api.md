@@ -90,6 +90,8 @@ Cloner l'objet d'internationalisation donné avec de nouvelles préférences. Au
 
 Modifier les préférences linguistique de cet objet d'internationalisation. C'est la seule méthode qui modifie l'état de l'objet. Si vous avez besoin d'utiliser un objet immuable, utilisez plutôt le constructeur de copie (voir ci-dessus).
 
+Si la bibliothèque MobX peut être chargée, cette méthode deviend automatiquement une action, permettant de ne pas lever d'exception même avec MobX en mode strict.
+
 ## \$preferences: ReadonlyArray\<string>
 
 Les préférences réellement utilisées par l'objet. Seules les langues trouvées dans la table de langues sont conservées. Ce paramètre est en lecture seulement.

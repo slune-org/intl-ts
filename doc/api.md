@@ -90,6 +90,8 @@ Clone the given internationalization object with new preferences. In other words
 
 Change the language preferences of this internationalization object. This is the only method which will modify the object state. If you need your object to be immutable, use the clone constructor instead (see above).
 
+If the MobX library can be loaded, this function will automatically become an action, preventing it from throwing an exception if in MobX strict mode.
+
 ## \$preferences: ReadonlyArray\<string>
 
 The preferences really used by the object. Only languages which are found in the language map are retained. This parameter is read-only.
