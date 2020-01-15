@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sveyret/intl-ts.git"
+    "url": "git+https://github.com/slune-org/intl-ts.git"
   },
   "scripts": {
     "prepublishOnly": "npm run test && npm run clean && npm run build",
@@ -57,12 +57,11 @@
     "translate",
     "language"
   ],
-  "author": "Stéphane Veyret",
+  "author": "Slune",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/sveyret/intl-ts/issues"
+    "url": "https://github.com/slune-org/intl-ts/issues"
   },
-  "homepage": "https://github.com/sveyret/intl-ts",
   "devDependencies": {
     "@types/chai": "4.2.5",
     "@types/mocha": "5.2.7",

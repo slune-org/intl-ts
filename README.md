@@ -1,8 +1,8 @@
 [![npm package](https://badge.fury.io/js/intl-ts.svg)](https://www.npmjs.com/package/intl-ts)
-[![license](https://img.shields.io/github/license/sveyret/intl-ts.svg)](https://github.com/sveyret/intl-ts/blob/master/LICENSE)
-[![build](https://api.travis-ci.org/sveyret/intl-ts.svg?branch=master)](https://travis-ci.org/sveyret/intl-ts)
-[![coverage](https://coveralls.io/repos/github/sveyret/intl-ts/badge.svg?branch=master)](https://coveralls.io/github/sveyret/intl-ts)
-[![issues](https://img.shields.io/github/issues/sveyret/intl-ts.svg)](https://github.com/sveyret/intl-ts/issues)
+[![license](https://img.shields.io/github/license/slune-org/intl-ts.svg)](https://github.com/slune-org/intl-ts/blob/master/LICENSE)
+[![Build Status](https://travis-ci.org/slune-org/intl-ts.svg?branch=master)](https://travis-ci.org/slune-org/intl-ts)
+[![Coverage Status](https://coveralls.io/repos/github/slune-org/intl-ts/badge.svg?branch=master)](https://coveralls.io/github/slune-org/intl-ts?branch=master)
+[![issues](https://img.shields.io/github/issues/slune-org/intl-ts.svg)](https://github.com/slune-org/intl-ts/issues)
 
 # intl-ts - Type safe internationalization library
 
