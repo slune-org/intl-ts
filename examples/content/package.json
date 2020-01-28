@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "eslint src/*.ts src/**/*.ts src/**/*.tsx",
-    "go": "rimraf dist && tsc && webpack-cli && node ."
+    "start": "rimraf dist && tsc && webpack-cli && node ."
   },
   "author": "",
   "license": "ISC",
@@ -19,7 +19,7 @@
   "devDependencies": {
     "@types/express": "^4.17.2",
     "@types/glob": "^7.1.1",
-    "@types/node": "^12.12.8",
+    "@types/node": "^13.5.0",
     "@types/react": "^16.9.11",
     "@types/react-dom": "^16.9.4",
     "@typescript-eslint/eslint-plugin": "^2.7.0",

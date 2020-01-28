@@ -1,4 +1,6 @@
-export const messages = {
+import { createMessages } from 'intl-ts'
+
+export const messages = createMessages({
   $: 'English',
   welcome: 'Welcome here!',
   displayTime: (date: string, time: string) => `We are ${date}, and it is ${time}.`,
@@ -59,4 +61,4 @@ export const messages = {
     }
     return time
   },
-}
+})

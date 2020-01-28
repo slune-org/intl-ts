@@ -1,7 +1,8 @@
 /* eslint-disable no-irregular-whitespace */
+import { createMessages } from 'intl-ts'
 import { messages as defLang } from './en'
 
-export const messages: typeof defLang = {
+export const messages = createMessages<typeof defLang>({
   $: 'Français',
   welcome: 'Bienvenue ici !',
   displayTime: (date: string, time: string) => `Nous sommes ${date} et il est ${time}.`,
@@ -54,4 +55,4 @@ export const messages: typeof defLang = {
     }
     return time
   },
-}
+})

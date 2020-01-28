@@ -13,7 +13,7 @@ Ces deux projets très basiques font exactement la même chose du point de vue d
 Pour tester l'un de ces projet, déplacez-vous dans son répertoire et exécutez la commande :
 
 ```bash
-$ npm install && npm run go
+$ npm install && npm start
 ```
 
 Vous pourrez ensuite observer le résultat à l'aide d'un navigateur en vous rendant à l'adresse http://localhost:8080.
@@ -52,7 +52,7 @@ Le fichier principal sera pour la langue par défaut (référence). Vous pouvez 
 
 ```typescript
 // locale/en.ts
-export const messages = {
+export const messages = createMessages({
   $: 'English',
   welcome: 'Welcome here!',
   hello: (name: string) => `Hello ${name}!`,
@@ -88,7 +88,7 @@ export const messages = {
     }
     return time
   },
-}
+})
 ```
 
 ## Traduction complète
@@ -101,7 +101,7 @@ Un fichier de langue complet sera typé sur la langue par défaut afin de vérif
 // locale/fr.ts
 import { messages as defLang } from './en'
 
-export const messages: typeof defLang = {
+export const messages = createMessages<typeof defLang>({
   $: 'Français',
   welcome: 'Bienvenue ici !',
   hello: (name: string) => `Bonjour ${name} !`,
@@ -129,7 +129,7 @@ export const messages: typeof defLang = {
     }
     return time
   },
-}
+})
 ```
 
 ## Traduction partielle
@@ -138,13 +138,12 @@ Un fichier de langue partiel sera typé sur un objet `PartialMessages` du type d
 
 ```typescript
 // locale/fr_ca.ts
-import { PartialMessages } from 'intl-ts'
 import { messages as defLang } from './en'
 
-export const messages: PartialMessages<typeof defLang> = {
+export const messages = createMessages<PartialMessages<typeof defLang>>({
   $: 'Français (Canada)',
   welcome: 'Bienvenue icitte !',
-}
+})
 ```
 
 Notez que par défaut, lorsque le `Français (Canada)` sera sélectionné, la préférence `fr_ca` sera donnée à l'objet `Intl` qui ajoutera automatiquement la préférence `fr` en second choix, ce qui complétera les traductions correctement (c'est le résultat de l'option `createGenerics` du constructeur ou de la méthode `$changePreferences()`). En dernier choix, si la traduction n'est toujours pas trouvée, c'est la langue par défaut qui est utilisée.

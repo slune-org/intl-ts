@@ -1,7 +1,7 @@
-import { PartialMessages } from 'intl-ts'
+import { PartialMessages, createMessages } from 'intl-ts'
 import { messages as defLang } from './en'
 
-export const messages: PartialMessages<typeof defLang> = {
+export const messages = createMessages<PartialMessages<typeof defLang>>({
   $: 'Français (Canada)',
   welcome: 'Bienvenue icitte !',
-}
+})

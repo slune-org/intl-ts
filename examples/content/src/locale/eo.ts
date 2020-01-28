@@ -1,7 +1,7 @@
-import { PartialMessages } from 'intl-ts'
+import { PartialMessages, createMessages } from 'intl-ts'
 import { messages as defLang } from './en'
 
-export const messages: PartialMessages<typeof defLang> = {
+export const messages = createMessages<PartialMessages<typeof defLang>>({
   $: 'Esperanto',
   welcome: 'Bonvenon ĉi-tie!',
   displayTime: (date: string, time: string) => `Nun estas ${date} je ${time}.`,
@@ -71,4 +71,4 @@ export const messages: PartialMessages<typeof defLang> = {
     }
     return time
   },
-}
+})

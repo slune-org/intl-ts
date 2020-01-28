@@ -31,7 +31,7 @@ $ yarn add intl-ts
 
 # Language/langue
 
-Because French is my native language, finding all documents and messages in French is not an option. Other translations are welcome.
+Because French is my native language, you will find all documents and messages in French. Other translations are welcome.
 
 Anyway, because English is the language of programming, the code, including variable names and comments, are in English.
 
@@ -43,7 +43,7 @@ Anyway, because English is the language of programming, the code, including vari
 
 ```typescript
 // English version — default
-const en = {
+const en = createMessages({
   $: 'English',
   welcome: 'Welcome here!',
   hello: (name: string) => `Hello ${name}`,
@@ -60,13 +60,13 @@ const en = {
       }
     }
   },
-}
+})
 
 // Type describing messages
 type langType = typeof en
 
 // French version — full
-const fr: langType = {
+const fr = createMessages<langType>({
   $: 'Français',
   welcome: 'Bienvenue ici !',
   hello: (name: string) => `Bonjour ${name}`,
@@ -83,21 +83,23 @@ const fr: langType = {
       }
     }
   },
-}
+})
 
 // Canada french version — partial
-const fr_ca: PartialMessages<langType> = {
+const fr_ca = createMessages<PartialMessages<langType>>({
   $: 'Français (Canada)',
   welcome: 'Bienvenue icitte !',
-}
+})
 
 // Esperanto version — partial
-const eo: PartialMessages<langType> = {
+const eo = createMessages<PartialMessages<langType>>({
   $: 'Esperanto',
   welcome: 'Bonvenon ĉi-tie!',
   hello: (name: string) => `Saluton ${name}`,
-}
+})
 ```
+
+The function `createMessages` is actually an identity function and is therefore not mandatory. Its sole purpose is to allow TypeScript to check the type of the given messages.
 
 Note that the message names _must not contain one of the keyword_ of the [Intl API](doc/api.md#intlt-extends-messages).
 
