@@ -5,7 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "eslint src/*.ts src/**/*.ts src/**/*.tsx",
-    "go": "rimraf dist && tsc && webpack-cli && node ."
+    "start": "rimraf dist && tsc && webpack-cli && node ."
   },
   "author": "",
   "license": "ISC",

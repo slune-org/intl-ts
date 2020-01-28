@@ -4,11 +4,15 @@ This interface describes how objects containing messages for a given language sh
 
 It is advised not to use keys starting with `$` in messages, to prevent conflict with the `Intl` reserved keywords; but it is mandatory that, for each language, a `$` entry is provided with the name of language. Usually, the name of the language is specified in the language itself.
 
-Do not type your default language with `Message`, because if you do so, `typeof` will return `Message` and you will loose the specific type checking of your messages. If your default language is not written as expected, a compile time error will be raised when the language map is created.
+Do not type your default language with `Message`, because if you do so, `typeof` will return `Message` and you will loose the specific type checking of your messages. Use the function `createMessages` to check the messages type.
 
 # PartialMessages\<T extends Messages>
 
 This type may be used to indicate a partial translation. It is similar to `Partial<T>` except that the `$` entry is mandatory.
+
+# createMessages\<T extends Messages>(messages: T): T
+
+This identity function does nothing by itself. It is advised to use it anyway for creating messages of a given language as it will allow TypeScript to check for the message types.
 
 # LanguageMapDefinition\<T extends Messages>
 

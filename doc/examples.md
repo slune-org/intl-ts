@@ -13,7 +13,7 @@ Those two projects very basics do exactly the same thing as seen by a final user
 In order to test one of those project, change to its directory and execute the command:
 
 ```bash
-$ npm install && npm run go
+$ npm install && npm start
 ```
 
 You can then observe the result with a browser going at the address: http://localhost:8080.
@@ -52,7 +52,7 @@ The main file will be for the default (reference) language. By the way, you can 
 
 ```typescript
 // locale/en.ts
-export const messages = {
+export const messages = createMessages({
   $: 'English',
   welcome: 'Welcome here!',
   hello: (name: string) => `Hello ${name}!`,
@@ -88,7 +88,7 @@ export const messages = {
     }
     return time
   },
-}
+})
 ```
 
 ## Full translation
@@ -101,7 +101,7 @@ A full language file will match the default language type to ensure no entry is 
 // locale/fr.ts
 import { messages as defLang } from './en'
 
-export const messages: typeof defLang = {
+export const messages = createMessages<typeof defLang>({
   $: 'Français',
   welcome: 'Bienvenue ici !',
   hello: (name: string) => `Bonjour ${name} !`,
@@ -129,7 +129,7 @@ export const messages: typeof defLang = {
     }
     return time
   },
-}
+})
 ```
 
 ## Partial translation
@@ -138,13 +138,12 @@ A partial language file will match a `PartialMessages` of the default language t
 
 ```typescript
 // locale/fr_ca.ts
-import { PartialMessages } from 'intl-ts'
 import { messages as defLang } from './en'
 
-export const messages: PartialMessages<typeof defLang> = {
+export const messages = createMessages<PartialMessages<typeof defLang>>({
   $: 'Français (Canada)',
   welcome: 'Bienvenue icitte !',
-}
+})
 ```
 
 Note that, by default, when the `Français (Canada)` will be selected, the `fr_ca` preference will be given to the `Intl` object which will automatically add the `fr` preference as second choice, which will correctly fill the translations (this is the result of the `createGenerics` option in the constructor and in the `$changePreferences()` method). As a last choice, if translation is still not found, the default language is used.

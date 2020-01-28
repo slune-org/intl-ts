@@ -4,11 +4,15 @@ Cette interface décrit comment écrire les objets contenant les messages pour u
 
 Il est conseillé de ne pas utiliser de clé commençant par `$` dans les messages, afin d'éviter les conflits avec les mots-clés réservés de `Intl` ; mais il est nécessaire que, pour chaque langue, une entrée `$` soit fournie, avec le nom de la langue. En général, le nom de la langue est spécifiée dans la langue elle-même.
 
-Ne typez pas votre langue par défaut avec `Message`, car dans ce cas, `typeof` retournera `Message` et vous perdrez la vérification spécifique de vos messages. Si la langue par défaut n'est pas écrite comme attendu, une erreur de compilation sera levée lorsque la table de langues sera créée.
+Ne typez pas votre langue par défaut avec `Message`, car dans ce cas, `typeof` retournera `Message` et vous perdrez la vérification spécifique de vos messages. Utilisez la function `createMessages` pour vérifier le type des messages.
 
 # PartialMessages\<T extends Messages>
 
 Ce type peut être utilisé pour indiquer une traduction partielle. Il est similaire à `Partial<T>` sauf que l'entrée `$` est obligatoire.
+
+# createMessages\<T extends Messages>(messages: T): T
+
+Cette fonction identité ne fait rien en soi. Il est tout de même conseillé de l'utiliser lors de la création des messages pour une langue donnée, car elle permet à TypeScript de vérifier le type des messages.
 
 # LanguageMapDefinition\<T extends Messages>
 

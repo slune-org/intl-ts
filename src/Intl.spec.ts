@@ -76,14 +76,18 @@ describe('Intl', function() {
       expect(testedLang.welcome()).to.equal(eo.welcome)
       // eslint-disable-next-line @typescript-eslint/camelcase
       expect(testedLang.$getMessageFunction('hello')).to.equal(fr_ca.hello)
-      expect(testedLang.$getMessageFunction('showElementCount')).to.equal(fr.showElementCount)
+      expect(testedLang.$getMessageFunction('showElementCount').toString()).to.equal(
+        fr.showElementCount.toString()
+      )
     })
 
     it('must use preferred available message or fallback to more generic type', function() {
       const testedLang = prepareLang(['eo', 'fr_CA'])
       expect(testedLang.welcome()).to.equal(eo.welcome)
       expect(testedLang.$getMessageFunction('hello')).to.equal(eo.hello)
-      expect(testedLang.$getMessageFunction('showElementCount')).to.equal(fr.showElementCount)
+      expect(testedLang.$getMessageFunction('showElementCount').toString()).to.equal(
+        fr.showElementCount.toString()
+      )
     })
 
     it('must forget non existing language in preferences', function() {

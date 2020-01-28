@@ -21,3 +21,13 @@ export type Messages = {
 export type PartialMessages<T extends Messages> = {
   $: string
 } & Partial<Omit<T, '$'>>
+
+/**
+ * This identity function can be useful to check that messages have the appropriate type.
+ *
+ * @param messages - The messages to create.
+ * @returns The same messages as input.
+ */
+export function createMessages<T extends Messages>(messages: T): T {
+  return messages
+}

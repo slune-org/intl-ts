@@ -2,70 +2,74 @@
 import { expect } from 'chai'
 
 import { LanguageMap } from '.'
-import { PartialMessages } from './MessageTypes'
+import { PartialMessages, createMessages } from './MessageTypes'
 
 // English version — default
-export const en = {
+export const en = createMessages({
   $: 'English',
   welcome: 'Welcome!',
   hello: (name: string) => `Hello ${name}`,
-  showElementCount: (count: number) => {
-    switch (count) {
-      case 0: {
-        return 'There are no elements'
-      }
-      case 1: {
-        return 'There is one element'
-      }
-      default: {
-        return `There are ${en.formatNumber(count)} elements`
+  get showElementCount(): (count: number) => string {
+    return (count: number) => {
+      switch (count) {
+        case 0: {
+          return 'There are no elements'
+        }
+        case 1: {
+          return 'There is one element'
+        }
+        default: {
+          return `There are ${this.formatNumber(count)} elements`
+        }
       }
     }
   },
   formatNumber: (num: number) => {
     return `${num}.00`
   },
-}
+})
 
 // Type describing message in a given language
 export type langType = typeof en
 
 // French version — full
-export const fr: langType = {
+export const fr = createMessages<langType>({
   $: 'Français',
   welcome: 'Bienvenue !',
   hello: (name: string) => `Bonjour ${name}`,
-  showElementCount: (count: number) => {
-    switch (count) {
-      case 0: {
-        return 'Il n’y a pas d’éléments'
-      }
-      case 1: {
-        return 'Il y a un élément'
-      }
-      default: {
-        return `Il y a ${fr.formatNumber(count)} éléments`
+  get showElementCount(): (count: number) => string {
+    return (count: number) => {
+      switch (count) {
+        case 0: {
+          return 'Il n’y a pas d’éléments'
+        }
+        case 1: {
+          return 'Il y a un élément'
+        }
+        default: {
+          return `Il y a ${this.formatNumber(count)} éléments`
+        }
       }
     }
   },
   formatNumber: (num: number) => {
     return `${num},00`
   },
-}
+})
 
 // Canada french version — partial
 // eslint-disable-next-line @typescript-eslint/camelcase
-export const fr_ca: PartialMessages<langType> = {
+export const fr_ca = createMessages<PartialMessages<langType>>({
   $: 'Français (Canada)',
   hello: (name: string) => `Allo ${name}`,
-}
+})
 
 // Esperanto version — partial
-export const eo: PartialMessages<langType> = {
+export const eo = createMessages<PartialMessages<langType>>({
   $: 'Esperanto',
   welcome: 'Bonvenon!',
   hello: (name: string) => `Saluton ${name}`,
-}
+})
 
 export const languageMap = new LanguageMap({
   default: en,
