@@ -8,6 +8,18 @@ export type LanguageMapDefinition<T extends Messages> = {
 } & Omit<{ [lang: string]: PartialMessages<T> | 'default' }, 'default'>
 
 /**
+ * Check if parameter is simple language or full definition.
+ *
+ * @param tested - The tested language map definition.
+ * @returns True if full definition.
+ */
+function isFullDefinition<T extends Messages>(
+  tested: T | LanguageMapDefinition<T>
+): tested is LanguageMapDefinition<T> {
+  return 'default' in tested && typeof tested.default === 'object'
+}
+
+/**
  * The language map contains a list of messages for each supported language. A LanguageMap is immutable.
  */
 export class LanguageMap<T extends Messages> {
@@ -36,12 +48,6 @@ export class LanguageMap<T extends Messages> {
    * Constructor implementation.
    */
   public constructor(messages: T | LanguageMapDefinition<T>, defaultLang?: string) {
-    function isFullDefinition<T extends Messages>(
-      tested: T | LanguageMapDefinition<T>
-    ): tested is LanguageMapDefinition<T> {
-      return 'default' in tested && typeof tested.default === 'object'
-    }
-
     if (isFullDefinition(messages)) {
       this.definition = messages
       if (

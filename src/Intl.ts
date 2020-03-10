@@ -199,7 +199,9 @@ Intl.prototype.$getMessageFunction = function<T extends Messages, K extends keyo
   if (!message) {
     message = this.$languageMap.messages()[name]
   }
-  if (typeof message === 'string') {
+  if (!message) {
+    throw new Error(`Intl: undefined message is not permitted for entry "${name}"`)
+  } else if (typeof message === 'string') {
     return (() => message) as any
   } else {
     return message as MessageFunction<T[K]>

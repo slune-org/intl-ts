@@ -10,39 +10,22 @@
     "!dist/**/*.map",
     "doc/**"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/slune-org/intl-ts.git"
-  },
   "scripts": {
-    "prepublishOnly": "npm run test && npm run clean && npm run build",
-    "test": "npm run test:lint && npm run test:depcheck && npm run test:unit",
-    "test:lint": "eslint src/**/*.ts",
-    "test:depcheck": "depcheck --ignores='@types/mocha,@types/node'",
-    "test:unit": "nyc mocha --require ts-node/register 'src/**/*.spec.ts'",
+    "version": "pm-exec run all",
+    "postversion": "git push && git push --tags",
+    "prepublishOnly": "pm-exec run all",
+    "all": "pm-exec run clean && pm-exec run test && pm-exec run build",
+    "test": "pm-exec run test:lint && pm-exec run test:dep && pm-exec run test:unit",
+    "test:lint": "eslint 'src/**/*.ts'",
+    "test:dep": "depcheck",
+    "test:unit": "nyc mocha 'src/**/*.spec.ts'",
+    "build": "pm-exec run build:main",
+    "build:main": "tsc && copyfiles -u 1 src/**/*.js dist",
     "clean": "rimraf dist",
-    "build": "npm run build:tsc",
-    "build:tsc": "tsc",
-    "example": "npm run example:mobx-full && npm run example:redux-lite",
-    "example:mobx-full": "NAME=mobx-full npm run :example:name",
-    "example:redux-lite": "NAME=redux-lite npm run :example:name",
+    "example": "pm-exec run example:mobx-full && pm-exec run example:redux-lite",
+    "example:mobx-full": "cross-env NAME=mobx-full pm-exec run :example:name",
+    "example:redux-lite": "cross-env NAME=redux-lite pm-exec run :example:name",
     ":example:name": "rimraf examples/${NAME} && cp -r examples/content examples/${NAME} && patch -d examples/${NAME} -p1 -i ../${NAME}.diff"
-  },
-  "nyc": {
-    "extension": [
-      ".ts"
-    ],
-    "include": [
-      "src/**"
-    ],
-    "exclude": [
-      "**/*.spec.ts"
-    ],
-    "reporter": [
-      "lcov",
-      "text"
-    ],
-    "all": true
   },
   "keywords": [
     "internationalization",
@@ -59,28 +42,37 @@
   ],
   "author": "Slune",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slune-org/intl-ts.git"
+  },
   "bugs": {
     "url": "https://github.com/slune-org/intl-ts/issues"
   },
   "devDependencies": {
-    "@types/chai": "4.2.7",
-    "@types/mocha": "5.2.7",
-    "@types/node": "13.5.0",
-    "@typescript-eslint/eslint-plugin": "2.18.0",
-    "@typescript-eslint/parser": "2.18.0",
+    "@istanbuljs/nyc-config-typescript": "1.0.1",
+    "@types/chai": "4.2.10",
+    "@types/mocha": "7.0.2",
+    "@types/node": "13.9.0",
+    "@typescript-eslint/eslint-plugin": "2.23.0",
+    "@typescript-eslint/parser": "2.23.0",
     "chai": "4.2.0",
-    "depcheck": "0.9.1",
+    "copyfiles": "2.2.0",
+    "cross-env": "7.0.2",
+    "depcheck": "0.9.2",
     "eslint": "6.8.0",
     "eslint-config-prettier": "6.10.0",
-    "eslint-plugin-import": "2.20.0",
-    "eslint-plugin-jsdoc": "21.0.0",
+    "eslint-plugin-import": "2.20.1",
+    "eslint-plugin-jsdoc": "22.0.1",
     "eslint-plugin-prettier": "3.1.2",
     "mobx": "5.15.4",
-    "mocha": "7.0.1",
+    "mocha": "7.1.0",
     "nyc": "15.0.0",
+    "pm-exec": "1.0.0",
     "prettier": "1.19.1",
-    "rimraf": "3.0.1",
+    "rimraf": "3.0.2",
+    "source-map-support": "0.5.16",
     "ts-node": "8.6.2",
-    "typescript": "3.7.5"
+    "typescript": "3.8.3"
   }
 }

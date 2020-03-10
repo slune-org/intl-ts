@@ -4,7 +4,9 @@ This interface describes how objects containing messages for a given language sh
 
 It is advised not to use keys starting with `$` in messages, to prevent conflict with the `Intl` reserved keywords; but it is mandatory that, for each language, a `$` entry is provided with the name of language. Usually, the name of the language is specified in the language itself.
 
-Do not type your default language with `Message`, because if you do so, `typeof` will return `Message` and you will loose the specific type checking of your messages. Use the function `createMessages` to check the messages type.
+Each message can be either a string or a function returning a string. The `Messages` type also accepts `undefined`, but this is due to _TypeScript_ constraint and will throw an error if used.
+
+Do not type your default language with `Messages`, because if you do so, `typeof` will return `Messages` and you will loose the specific type checking of your messages. Use the function `createMessages` to check the messages type.
 
 # PartialMessages\<T extends Messages>
 
