@@ -4,6 +4,11 @@
   "description": "Internationalization library for TypeScript",
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
+  "type": "commonjs",
+  "exports": {
+    "require": "./dist/index.js",
+    "import": "./dist/module.mjs"
+  },
   "files": [
     "dist/**",
     "!dist/**/*.spec.*",
@@ -20,7 +25,7 @@
     "test:dep": "depcheck",
     "test:unit": "nyc mocha 'src/**/*.spec.ts'",
     "build": "pm-exec run build:main",
-    "build:main": "tsc && copyfiles -u 1 src/**/*.js dist",
+    "build:main": "tsc && copyfiles -u 1 src/**/*.{m,c,}js dist",
     "clean": "rimraf dist",
     "example": "pm-exec run example:mobx-full && pm-exec run example:redux-lite",
     "example:mobx-full": "cross-env NAME=mobx-full pm-exec run :example:name",
