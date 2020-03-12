@@ -4,7 +4,9 @@ Cette interface décrit comment écrire les objets contenant les messages pour u
 
 Il est conseillé de ne pas utiliser de clé commençant par `$` dans les messages, afin d'éviter les conflits avec les mots-clés réservés de `Intl` ; mais il est nécessaire que, pour chaque langue, une entrée `$` soit fournie, avec le nom de la langue. En général, le nom de la langue est spécifiée dans la langue elle-même.
 
-Ne typez pas votre langue par défaut avec `Message`, car dans ce cas, `typeof` retournera `Message` et vous perdrez la vérification spécifique de vos messages. Utilisez la function `createMessages` pour vérifier le type des messages.
+Chaque message peut être une chaine de caractères ou une fonction renvoyant une chaine de caractères. Le type `Messages` accepte également des valeurs `undefined`, mais ceci est lié à une contrainte de _TypeScript_ et provoquera une erreur si utilisé.
+
+Ne typez pas votre langue par défaut avec `Messages`, car dans ce cas, `typeof` retournera `Messages` et vous perdrez la vérification spécifique de vos messages. Utilisez la fonction `createMessages` pour vérifier le type des messages.
 
 # PartialMessages\<T extends Messages>
 

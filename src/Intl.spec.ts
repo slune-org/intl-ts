@@ -35,6 +35,11 @@ describe('Intl', function() {
     })
   })
 
+  it('must throw an exception if language map contains undefined values', function() {
+    const undefinedLang: any = new Intl(new LanguageMap({ $: 'Undefined', value: undefined }))
+    expect(() => undefinedLang.value()).to.throw(/not permitted/i)
+  })
+
   it('must only find messages on object enumeration', function() {
     const keys = []
     for (const key in lang) {

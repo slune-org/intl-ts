@@ -6,21 +6,26 @@ export type Message = string | ((...args: any[]) => string)
 /**
  * A message converted into a function.
  */
-export type MessageFunction<T extends Message> = T extends string ? () => string : T
+export type MessageFunction<T extends Message | undefined> = T extends undefined
+  ? never
+  : T extends string
+  ? () => string
+  : T
 
 /**
  * The available messages for a given language.
  */
-export type Messages = {
+export interface Messages {
+  [key: string]: Message | undefined
   $: string // The language name itself
-} & Omit<{ [key: string]: Message }, '$'>
+}
 
 /**
  * The available messages for a given language.
  */
-export type PartialMessages<T extends Messages> = {
+export type PartialMessages<T extends Messages> = Partial<T> & {
   $: string
-} & Partial<Omit<T, '$'>>
+}
 
 /**
  * This identity function can be useful to check that messages have the appropriate type.

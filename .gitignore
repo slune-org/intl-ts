@@ -1,3 +1,4 @@
+# Distributable
 node_modules/
 dist/
 
@@ -5,7 +6,14 @@ dist/
 .nyc_output/
 coverage/
 
-# VS code
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+pnpm-debug.log
+
+# IDE
+*.code-workspace
 .vscode/
 
 # Examples

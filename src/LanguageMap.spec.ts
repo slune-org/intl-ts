@@ -9,6 +9,9 @@ export const en = createMessages({
   $: 'English',
   welcome: 'Welcome!',
   hello: (name: string) => `Hello ${name}`,
+  formatNumber: (num: number) => {
+    return `${num}.00`
+  },
   get showElementCount(): (count: number) => string {
     return (count: number) => {
       switch (count) {
@@ -24,9 +27,6 @@ export const en = createMessages({
       }
     }
   },
-  formatNumber: (num: number) => {
-    return `${num}.00`
-  },
 })
 
 // Type describing message in a given language
@@ -37,6 +37,9 @@ export const fr = createMessages<langType>({
   $: 'Français',
   welcome: 'Bienvenue !',
   hello: (name: string) => `Bonjour ${name}`,
+  formatNumber: (num: number) => {
+    return `${num},00`
+  },
   get showElementCount(): (count: number) => string {
     return (count: number) => {
       switch (count) {
@@ -51,9 +54,6 @@ export const fr = createMessages<langType>({
         }
       }
     }
-  },
-  formatNumber: (num: number) => {
-    return `${num},00`
   },
 })
 
