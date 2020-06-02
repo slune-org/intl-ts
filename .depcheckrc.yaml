@@ -1,2 +1,16 @@
+detectors:
+  - importDeclaration
+  - exportDeclaration
+  - importCallExpression
+  - requireCallExpression
+  - requireResolveCallExpression
+  - typescriptImportEqualsDeclaration
+  - typescriptImportType
+specials:
+  - bin
+  - eslint
+  - istanbul
+  - mocha
+  - prettier
 ignores:
   - '@types/node'

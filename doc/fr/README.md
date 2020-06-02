@@ -9,25 +9,19 @@ intl-ts est une bibliothèque d'internationalisation (i18n) pour TypeScript. Le 
 
 Si vous utilisiez une version précédente de la bibliothèque, vous pouvez être intéressé par le [guide de migration](migrate.md)
 
+# Langue
+
+Les documents et messages, le code (y compris les noms de variable et commentaires), sont en anglais.
+
+Cependant, Slune étant une entreprise française, tous les documents et messages importants doivent également être fournis en français. Les autres traductions sont bienvenues.
+
 # Installation
 
-L'installation se fait avec la commande `npm install` :
+L’installation se fait avec la commande `npm install` :
 
 ```bash
 $ npm install --save intl-ts
 ```
-
-Si vous préférez utiliser `yarn` :
-
-```bash
-$ yarn add intl-ts
-```
-
-# Langue
-
-Le français étant ma langue maternelle, vous trouverez tous les documents et messages en français. Les autres traductions sont bienvenues.
-
-Cependant, l'anglais étant la langue de la programmation, le code, y compris les noms de variable et commentaires, sont en anglais.
 
 # Utilisation
 
@@ -134,3 +128,9 @@ Un nouvel objet est créé lors de l'appel à `LanguageMap.merge()`.
 
 - [Documentation de l'API](api.md)
 - [Exemples de code](examples.md)
+
+# Contribuer
+
+Bien que nous ne puissions pas garantir un temps de réponse, n’hésitez pas à ouvrir un incident si vous avez une question ou un problème pour utiliser ce paquet.
+
+Les _Pull Requests_ sont bienvenues. Vous pouvez bien sûr soumettre des corrections ou améliorations de code, mais n’hésitez pas également à améliorer la documentation, même pour de petites fautes d’orthographe ou de grammaire.

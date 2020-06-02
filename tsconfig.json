@@ -1,11 +1,11 @@
 {
   "compilerOptions": {
-    "target": "es2015",
-    "lib": ["dom", "es2015", "es2020"],
-    "module": "CommonJS",
+    "target": "ES2018",
     "moduleResolution": "node",
+    "module": "CommonJS",
+    "baseUrl": ".",
     "rootDir": "src",
-    "outDir": "dist",
+    "outDir": "lib",
     "declaration": true,
     "sourceMap": true,
     "strict": true,
@@ -13,7 +13,8 @@
     "noUnusedParameters": true,
     "noUnusedLocals": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "lib": ["dom", "es2018", "es2020"]
   },
   "include": ["src/**/*.ts"]
 }
