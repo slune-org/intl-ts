@@ -196,14 +196,14 @@ Intl.prototype.$getMessageFunction = function<T extends Messages, K extends keyo
       break
     }
   }
-  if (!message) {
+  if (message === undefined) {
     message = this.$languageMap.messages()[name]
   }
-  if (!message) {
-    throw new Error(`Intl: undefined message is not permitted for entry "${name}"`)
-  } else if (typeof message === 'string') {
+  if (typeof message === 'string') {
     return (() => message) as any
-  } else {
+  } else if (typeof message === 'function') {
     return message as MessageFunction<T[K]>
+  } else {
+    throw new Error(`Intl: undefined message is not permitted for entry "${name}"`)
   }
 }

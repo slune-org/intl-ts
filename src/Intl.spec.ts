@@ -40,6 +40,11 @@ describe('Intl', function() {
     expect(() => undefinedLang.value()).to.throw(/not permitted/i)
   })
 
+  it('must not consider empty string as undefined value', function() {
+    const emptyLang: any = new Intl(new LanguageMap({ $: 'Empty', value: '' }))
+    expect(() => emptyLang.value()).not.to.throw()
+  })
+
   it('must only find messages on object enumeration', function() {
     const keys = []
     for (const key in lang) {
