@@ -34,6 +34,7 @@ export class LanguageMap<T extends Messages> {
    *
    * @param messages - The language map definition.
    */
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public constructor(messages: LanguageMapDefinition<T>)
 
   /**
@@ -42,6 +43,7 @@ export class LanguageMap<T extends Messages> {
    * @param messages - The messages for the default language.
    * @param defaultLang - The code of the default language (e.g. `eo`).
    */
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   public constructor(messages: T, defaultLang?: string)
 
   /*
@@ -72,7 +74,7 @@ export class LanguageMap<T extends Messages> {
    */
   public merge<A extends Messages>(additional: { [lang: string]: Partial<A> }): LanguageMap<T & A> {
     const defaultLang = this.default
-    function sortValue(key: string) {
+    function sortValue(key: string): number {
       return key === 'default' ? -2 : defaultLang && key === defaultLang ? -1 : 0
     }
     const _definition = Object.entries(this.definition).reduce((previous, [lang, messages]) => {

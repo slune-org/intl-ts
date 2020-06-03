@@ -128,7 +128,7 @@ export const Intl: {
     preferences?: ReadonlyArray<string>,
     createGenerics?: boolean
   ): Intl<T>
-} = function<T extends Messages>(
+} = function <T extends Messages>(
   this: Intl<T>,
   mapOrSource: LanguageMap<T> | Intl<T>,
   preferences?: ReadonlyArray<string>,
@@ -169,7 +169,7 @@ export const Intl: {
   }
 } as any
 
-Intl.prototype.$changePreferences = function<T extends Messages>(
+Intl.prototype.$changePreferences = function <T extends Messages>(
   this: Intl<T>,
   preferences: ReadonlyArray<string>,
   createGenerics?: boolean
@@ -184,7 +184,7 @@ if (!!mobx && !!mobx.action) {
   Intl.prototype.$changePreferences = mobx!.action(Intl.prototype.$changePreferences)
 }
 
-Intl.prototype.$getMessageFunction = function<T extends Messages, K extends keyof T>(
+Intl.prototype.$getMessageFunction = function <T extends Messages, K extends keyof T>(
   this: Intl<T>,
   name: K
 ): MessageFunction<T[K]> {
@@ -196,14 +196,14 @@ Intl.prototype.$getMessageFunction = function<T extends Messages, K extends keyo
       break
     }
   }
-  if (!message) {
+  if (message === undefined) {
     message = this.$languageMap.messages()[name]
   }
-  if (!message) {
-    throw new Error(`Intl: undefined message is not permitted for entry "${name}"`)
-  } else if (typeof message === 'string') {
+  if (typeof message === 'string') {
     return (() => message) as any
-  } else {
+  } else if (typeof message === 'function') {
     return message as MessageFunction<T[K]>
+  } else {
+    throw new Error(`Intl: undefined message is not permitted for entry "${name}"`)
   }
 }

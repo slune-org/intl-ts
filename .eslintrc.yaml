@@ -1,22 +1,25 @@
----
 env:
-  browser: true
+  shared-node-browser: true
   es6: true
-parser: "@typescript-eslint/parser"
+  es2017: true
+parser: '@typescript-eslint/parser'
 parserOptions:
   project: tsconfig.json
   sourceType: module
 plugins:
-  - import
+  - prettier
 settings:
   jsdoc:
     mode: typescript
 extends:
   - eslint:recommended
+  - plugin:node/recommended
   - plugin:@typescript-eslint/eslint-recommended
   - plugin:@typescript-eslint/recommended
+  - plugin:import/warnings
+  - plugin:import/typescript
   - plugin:jsdoc/recommended
-  - plugin:prettier/recommended
+  - prettier
   - prettier/@typescript-eslint
 rules:
   curly: error
@@ -33,15 +36,13 @@ rules:
     - boolean
     - Undefined
   id-match: error
-  max-classes-per-file: "off"
-  no-bitwise: "off"
+  max-classes-per-file: 'off'
+  no-bitwise: 'off'
   no-caller: error
-  # Keep the ability to use console, even if this should only be used for
-  # debuging purpose
   no-console: warn
   no-eval: error
   no-extra-bind: error
-  no-invalid-this: "off"
+  no-invalid-this: 'off'
   no-new-wrappers: error
   no-restricted-syntax:
     - error
@@ -56,6 +57,8 @@ rules:
   no-unused-expressions:
     - error
     - allowShortCircuit: true
+      allowTernary: true
+      allowTaggedTemplates: true
   object-shorthand: error
   one-var:
     - error
@@ -65,44 +68,68 @@ rules:
     - allowUnboundThis: false
   prefer-object-spread: error
   radix: error
-  require-atomic-updates: "off"
+  require-atomic-updates: 'off'
+  spaced-comment: warn
+  valid-typeof: 'off'
   space-in-parens: error
-  spaced-comment: error
-  valid-typeof: "off"
-  "@typescript-eslint/array-type":
+  '@typescript-eslint/array-type':
     - error
     - default: array-simple
       readonly: generic
-  "@typescript-eslint/consistent-type-definitions": error
-  "@typescript-eslint/explicit-function-return-type": "off"
-  "@typescript-eslint/explicit-member-accessibility":
+  '@typescript-eslint/consistent-type-definitions': error
+  '@typescript-eslint/explicit-function-return-type':
+    - error
+    - allowExpressions: true
+      allowTypedFunctionExpressions: true
+  '@typescript-eslint/explicit-member-accessibility':
     - error
     - accessibility: explicit
-  "@typescript-eslint/interface-name-prefix": "off"
-  "@typescript-eslint/member-ordering": error
-  "@typescript-eslint/no-explicit-any": "off"
-  "@typescript-eslint/no-non-null-assertion": "off"
-  "@typescript-eslint/no-parameter-properties": "off"
-  "@typescript-eslint/no-unused-vars":
+  '@typescript-eslint/interface-name-prefix': 'off'
+  '@typescript-eslint/no-explicit-any': 'off'
+  '@typescript-eslint/no-non-null-assertion': 'off'
+  '@typescript-eslint/no-parameter-properties': 'off'
+  '@typescript-eslint/no-unused-vars':
     - error
-    - argsIgnorePattern: "^_"
+    - argsIgnorePattern: '^_'
       ignoreRestSiblings: true
-  "@typescript-eslint/no-use-before-define": "off"
-  "@typescript-eslint/prefer-for-of": error
-  "@typescript-eslint/prefer-function-type": error
-  "@typescript-eslint/unified-signatures": error
-  import/no-duplicates: error
-  import/no-extraneous-dependencies:
+  '@typescript-eslint/no-use-before-define':
     - error
+    - functions: false
+      classes: true
+      enums: false
+      variables: false
+      typedefs: false
+  '@typescript-eslint/prefer-for-of': error
+  '@typescript-eslint/prefer-function-type': error
+  '@typescript-eslint/unified-signatures': warn
+  import/no-extraneous-dependencies:
+    - warn
     - optionalDependencies: false
       devDependencies:
-        - "**/*.spec.ts"
-  import/no-internal-modules: error
-  jsdoc/newline-after-description: error
-  jsdoc/no-types: error
-  jsdoc/require-description-complete-sentence: warn
+        - '**/*.spec.ts'
+  import/no-internal-modules: warn
+  import/no-self-import: error
+  import/order:
+    - warn
+    - groups:
+        - - builtin
+          - external
+        - internal
+      newlines-between: always
+      alphabetize:
+        order: asc
+        caseInsensitive: true
+  jsdoc/newline-after-description: warn
+  jsdoc/no-types: warn
+  jsdoc/require-description-complete-sentence:
+    - warn
+    - abbreviations:
+        - i.e.
+        - e.g.
   jsdoc/require-hyphen-before-param-description: warn
-  jsdoc/require-jsdoc: "off"
-  jsdoc/require-param-type: "off"
-  jsdoc/require-returns-type: "off"
+  jsdoc/require-jsdoc: 'off'
+  jsdoc/require-param-type: 'off'
+  jsdoc/require-returns-type: 'off'
+  node/no-missing-import: 'off'
+  node/no-unsupported-features/es-syntax: 'off'
   prettier/prettier: warn

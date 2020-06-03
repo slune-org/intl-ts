@@ -1,6 +1,6 @@
-# Distributable
+# Binaries
 node_modules/
-dist/
+lib/
 
 # Coverage
 .nyc_output/

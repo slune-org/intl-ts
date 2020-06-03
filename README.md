@@ -1,8 +1,8 @@
 [![npm package](https://badge.fury.io/js/intl-ts.svg)](https://www.npmjs.com/package/intl-ts)
-[![license](https://img.shields.io/github/license/slune-org/intl-ts.svg)](https://github.com/slune-org/intl-ts/blob/master/LICENSE)
+[![License](https://img.shields.io/github/license/slune-org/intl-ts.svg)](https://github.com/slune-org/intl-ts/blob/master/LICENSE)
 [![Build Status](https://travis-ci.org/slune-org/intl-ts.svg?branch=master)](https://travis-ci.org/slune-org/intl-ts)
 [![Coverage Status](https://coveralls.io/repos/github/slune-org/intl-ts/badge.svg?branch=master)](https://coveralls.io/github/slune-org/intl-ts?branch=master)
-[![issues](https://img.shields.io/github/issues/slune-org/intl-ts.svg)](https://github.com/slune-org/intl-ts/issues)
+[![Issues](https://img.shields.io/github/issues/slune-org/intl-ts.svg)](https://github.com/slune-org/intl-ts/issues)
 
 # intl-ts - Type safe internationalization library
 
@@ -15,6 +15,14 @@ intl-ts is an i18n (internationalization) library for TypeScript. The package is
 
 If you were using a previous version of the library, you may be interested by the [migration guide](doc/migrate.md)
 
+# Language/langue
+
+Documents, messages, code (including variable names and comments), are in English.
+
+Anyway, because Slune is French firm, all documents and important messages must also be provided in French. Other translations are welcome.
+
+:fr: Une version française de ce document se trouve [ici](doc/fr/README.md).
+
 # Installation
 
 Installation is done using `npm install` command:
@@ -22,20 +30,6 @@ Installation is done using `npm install` command:
 ```bash
 $ npm install --save intl-ts
 ```
-
-If you prefer using `yarn`:
-
-```bash
-$ yarn add intl-ts
-```
-
-# Language/langue
-
-Because French is my native language, you will find all documents and messages in French. Other translations are welcome.
-
-Anyway, because English is the language of programming, the code, including variable names and comments, are in English.
-
-:fr: Une version française de ce document se trouve [ici](doc/fr/README.md).
 
 # Usage
 
@@ -142,3 +136,9 @@ A new object is created when calling `LanguageMap.merge()`.
 
 - [API documentation](doc/api.md)
 - [Code examples](doc/examples.md)
+
+# Contributing
+
+Even though we cannot guarantee a response time, please feel free to file an issue if you have any question or problem using the package.
+
+_Pull Requests_ are welcome. You can, of course, submit corrections or improvements for code, but do not hesitate to also improve documentation, even for small spell or grammar errors.
