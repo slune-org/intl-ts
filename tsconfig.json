@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "target": "ES2018",
+    "target": "ES2015",
     "moduleResolution": "node",
     "module": "CommonJS",
     "baseUrl": ".",
@@ -14,7 +14,7 @@
     "noUnusedLocals": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
-    "lib": ["dom", "es2018", "es2020"]
+    "lib": ["dom", "es2015", "es2020"]
   },
   "include": ["src/**/*.ts"]
 }
