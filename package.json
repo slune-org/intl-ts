@@ -1,6 +1,6 @@
 {
   "name": "intl-ts",
-  "version": "4.3.1",
+  "version": "4.3.2",
   "description": "Type safe internationalization library",
   "keywords": [
     "internationalization",
@@ -47,8 +47,9 @@
     "test:depends": "depcheck",
     "test:unit": "nyc mocha 'src/**/*.spec.ts'",
     "test:dep": "depcheck",
-    "build": "pm-exec run build:main",
+    "build": "pm-exec run build:main && pm-exec run build:modules",
     "build:main": "tsc",
+    "build:modules": "cp src/module.mjs lib/",
     "debug": "pm-exec run debug:watch",
     "debug:watch": "onchange 'src/**' -- pm-exec run test:unit",
     "clean": "rimraf lib",
